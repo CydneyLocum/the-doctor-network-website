@@ -1,0 +1,621 @@
+<title>GP Jobs Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal-600:#F76747; --teal-700:#E95839; --teal-100:#FFF2EC;
+  --paper-0:#FFFFFF; --paper-50:#FAF9F6; --paper-100:#F1EFE9;
+  --ink-900:#142328; --ink-600:#5F6B70; --ink-400:#8C9A96;
+  --line:#DCE2DE;
+  --amber-600:#C98A2E; --amber-100:#FBF0DD;
+  --green-600:#1F574C; --green-100:#EEF6F2;
+  --rust-600:#5F6B70; --rust-100:#EDEEEB;
+  --eye:#142328; --eye-hover:#F76747;
+  --shadow: 0 1px 2px rgba(20,35,40,.06), 0 12px 28px -14px rgba(20,35,40,.22);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --teal-600:#FF8A68; --teal-700:#F76747; --teal-100:rgba(255,138,104,.16);
+    --paper-0:#1B2C29; --paper-50:#12201E; --paper-100:#223531;
+    --ink-900:#F5F1EA; --ink-600:#A9B8B3; --ink-400:#78897F;
+    --line:#2C3F3A;
+    --amber-600:#E3A94A; --amber-100:rgba(227,169,74,.16);
+    --green-600:#5FD1AC; --green-100:rgba(95,209,172,.16);
+    --rust-600:#A9B8B3; --rust-100:rgba(169,184,179,.14);
+    --eye:#F5F1EA; --eye-hover:#FF8A68;
+    --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 28px -14px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"]{
+  --teal-600:#FF8A68; --teal-700:#F76747; --teal-100:rgba(255,138,104,.16);
+  --paper-0:#1B2C29; --paper-50:#12201E; --paper-100:#223531;
+  --ink-900:#F5F1EA; --ink-600:#A9B8B3; --ink-400:#78897F;
+  --line:#2C3F3A;
+  --amber-600:#E3A94A; --amber-100:rgba(227,169,74,.16);
+  --green-600:#5FD1AC; --green-100:rgba(95,209,172,.16);
+  --rust-600:#A9B8B3; --rust-100:rgba(169,184,179,.14);
+  --eye:#F5F1EA; --eye-hover:#FF8A68;
+  --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 28px -14px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box;}
+body{ background:var(--paper-50); color:var(--ink-900); font-family:"Manrope",system-ui,sans-serif; margin:0; }
+::selection{ background:var(--teal-100); }
+.mono{font-family:"Manrope",sans-serif; font-variant-numeric:tabular-nums;}
+button{ font-family:inherit; }
+
+header{ position:sticky; top:env(safe-area-inset-top,0px); z-index:30; background:var(--paper-0); border-bottom:1px solid var(--line); }
+.header-inner{ max-width:1280px; margin:0 auto; padding:14px 20px 6px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+.logo{ display:flex; align-items:center; gap:9px; }
+.logo-word{ font-family:"Fredoka",sans-serif; font-weight:700; font-size:1.2rem; color:var(--ink-900); letter-spacing:.01em; }
+.logo-word .doctor{ position:relative; display:inline-block; padding-bottom:4px; }
+.logo-word .doctor .o{ color:var(--teal-600); }
+.logo-word .logo-smile{ position:absolute; left:1px; right:1px; bottom:-4px; width:calc(100% - 2px); height:.32em; display:block; }
+.logo-word .logo-smile path{ fill:none; stroke:var(--teal-600); stroke-width:7; stroke-linecap:round; }
+.count-pill{ font-family:"Manrope",sans-serif; font-size:.78rem; background:var(--teal-100); color:var(--teal-700); padding:5px 11px; border-radius:999px; font-weight:500; white-space:nowrap; }
+.eyebrow{ font-family:"Manrope",sans-serif; font-size:.72rem; color:var(--ink-400); letter-spacing:.06em; text-transform:uppercase; }
+.headline-group h1{ font-family:"Fredoka",sans-serif; font-size:1.5rem; margin:2px 0 12px; font-weight:700; }
+
+/* -------- filter bar -------- */
+.filterbar{ max-width:1280px; margin:0 auto; padding:0 20px 14px; }
+.filterbar .row1{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+.search-wrap{ position:relative; flex:1 1 240px; }
+.search-wrap svg{ position:absolute; left:11px; top:50%; transform:translateY(-50%); width:15px; height:15px; color:var(--ink-400); }
+#searchInput{ width:100%; padding:9px 12px 9px 32px; border:1px solid var(--line); border-radius:9px; background:var(--paper-50); color:var(--ink-900); font:inherit; font-size:.88rem; }
+#searchInput:focus{ outline:2px solid var(--teal-600); outline-offset:1px; }
+select#sortSelect{ padding:9px 12px; border:1px solid var(--line); border-radius:9px; background:var(--paper-50); color:var(--ink-900); font:inherit; font-size:.85rem; }
+.morefilters-btn{ display:flex; align-items:center; gap:6px; padding:9px 14px; border-radius:9px; border:1px solid var(--line); background:var(--paper-0); color:var(--ink-900); font-size:.85rem; font-weight:700; cursor:pointer; white-space:nowrap; }
+.morefilters-btn:hover{ border-color:var(--teal-600); }
+.morefilters-btn .n{ background:var(--teal-600); color:#FFFFFF; border-radius:999px; padding:1px 7px; font-size:.72rem; }
+
+.chip-row{ display:flex; gap:8px; flex-wrap:wrap; }
+.chip{ padding:6px 13px; border-radius:999px; border:1px solid var(--line); background:var(--paper-0); color:var(--ink-600); font-size:.82rem; font-weight:600; cursor:pointer; white-space:nowrap; transition:.15s; }
+.chip:hover{ border-color:var(--teal-600); color:var(--ink-900); }
+.chip.active{ background:var(--teal-600); border-color:var(--teal-600); color:#FFFFFF; }
+.chip .cnt{ opacity:.65; font-weight:500; margin-left:3px; }
+
+.more-panel{ display:none; margin-top:12px; padding:14px 16px; background:var(--paper-0); border:1px solid var(--line); border-radius:12px; }
+.more-panel.open{ display:block; }
+.more-group{ margin-bottom:14px; }
+.more-group:last-child{ margin-bottom:0; }
+.more-group-title{ font-size:.7rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-400); font-weight:700; margin-bottom:8px; }
+.more-actions{ display:flex; justify-content:flex-end; margin-top:10px; }
+.reset-link{ background:none; border:none; color:var(--ink-600); font-size:.82rem; font-weight:700; cursor:pointer; text-decoration:underline; }
+.reset-link:hover{ color:var(--ink-900); }
+
+/* -------- results -------- */
+.wrap{ max-width:1280px; margin:0 auto; padding:6px 20px 40px; }
+.results-line{ font-size:.86rem; color:var(--ink-600); margin-bottom:14px; }
+.results-line strong{ color:var(--ink-900); }
+
+.grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; align-items:start; }
+
+.card{ background:var(--paper-0); border:1px solid var(--line); border-radius:16px; padding:16px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:12px; }
+.card-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+.state-flag{ font-family:"Manrope",sans-serif; font-weight:700; font-size:.72rem; background:var(--paper-100); color:var(--ink-600); padding:4px 9px; border-radius:7px; letter-spacing:.03em; }
+.badge{ display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:999px; font-size:.72rem; font-weight:700; white-space:nowrap; }
+.badge-vac-hiring{ background:var(--green-100); color:var(--green-600); }
+.badge-vac-soon{ background:var(--amber-100); color:var(--amber-600); }
+.badge-vac-closed{ background:var(--rust-100); color:var(--rust-600); }
+.dot{ width:6px; height:6px; border-radius:50%; background:currentColor; }
+
+.card-title{ font-family:"Fredoka",sans-serif; font-weight:700; font-size:1.08rem; line-height:1.25; text-wrap:balance; }
+.card-suburb{ color:var(--ink-600); font-size:.86rem; margin-top:2px; }
+
+.pay-block{ background:var(--paper-50); border-radius:11px; padding:10px 12px; display:flex; align-items:baseline; justify-content:space-between; gap:8px; flex-wrap:wrap; }
+.pay-value{ font-family:"Manrope",sans-serif; font-weight:600; font-size:1rem; color:var(--teal-700); }
+.pay-sub{ font-size:.76rem; color:var(--ink-400); }
+
+.tag-row{ display:flex; gap:6px; flex-wrap:wrap; }
+.tag{ font-size:.72rem; font-weight:600; padding:4px 9px; border-radius:7px; background:var(--paper-100); color:var(--ink-600); }
+.tag-dpa-mm1{ background:var(--teal-100); color:var(--teal-700); }
+.tag-dpa-mm27{ background:var(--teal-100); color:var(--teal-700); opacity:.8; }
+.tag-dpa-exempt{ background:var(--amber-100); color:var(--amber-600); }
+
+.cta-row{ display:flex; gap:6px; }
+.cta-btn{ flex:1; display:flex; align-items:center; justify-content:center; gap:5px; padding:8px 6px; border-radius:9px; font-size:.74rem; font-weight:700; text-decoration:none; cursor:pointer; border:1px solid var(--line); color:var(--ink-900); background:var(--paper-50); white-space:nowrap; transition:.15s; }
+.cta-btn:hover{ border-color:var(--teal-600); color:var(--teal-700); background:var(--teal-100); }
+.cta-btn svg{ width:14px; height:14px; flex:none; }
+
+.card-footer{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding-top:10px; border-top:1px solid var(--line); }
+.updated-txt{ font-size:.76rem; color:var(--ink-400); font-family:"Manrope",sans-serif; }
+.view-btn{ background:none; border:none; color:var(--teal-700); font-weight:700; font-size:.82rem; cursor:pointer; display:flex; align-items:center; gap:4px; padding:2px; }
+.view-btn:hover{ text-decoration:underline; }
+.view-btn .chev{ transition:transform .18s ease; display:inline-block; }
+.card.open .view-btn .chev{ transform:rotate(180deg); }
+
+.offer-panel{ display:none; white-space:pre-line; font-size:.85rem; line-height:1.55; background:var(--paper-50); border:1px solid var(--line); border-radius:10px; padding:12px 14px; }
+.card.open .offer-panel{ display:block; }
+.mini-facts{ display:none; grid-template-columns:1fr 1fr; gap:8px 14px; font-size:.82rem; }
+.card.open .mini-facts{ display:grid; }
+.mini-facts .fl{ color:var(--ink-400); font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; }
+.mini-facts .fv{ font-weight:600; }
+
+.empty-state{ padding:64px 20px; text-align:center; color:var(--ink-600); grid-column:1/-1; }
+.empty-state h3{ font-family:"Fredoka",sans-serif; color:var(--ink-900); margin-bottom:6px; }
+
+.load-more-wrap{ display:flex; flex-direction:column; align-items:center; gap:8px; margin-top:26px; }
+.load-more-btn{ padding:11px 26px; border-radius:10px; border:1px solid var(--teal-600); background:var(--paper-0); color:var(--teal-700); font-weight:700; font-size:.88rem; cursor:pointer; }
+.load-more-btn:hover{ background:var(--teal-100); }
+.load-more-sub{ font-size:.78rem; color:var(--ink-400); }
+
+footer{ max-width:1280px; margin:0 auto 40px; padding:0 20px; color:var(--ink-400); font-size:.78rem; text-align:center; }
+</style>
+
+<header>
+  <div class="header-inner">
+    <div class="logo" aria-label="The Doctor Network" role="img">
+      <span class="logo-word">The D<span class="doctor"><span class="o">o</span>ct<span class="o">o</span><svg class="logo-smile" viewBox="0 0 100 34" aria-hidden="true"><path d="M5 7 Q50 32 95 7"/></svg></span>r Network</span>
+    </div>
+    <span class="count-pill" id="headerCount">Loading…</span>
+  </div>
+  <div class="header-inner" style="padding-top:0; padding-bottom:0;">
+    <div class="headline-group">
+      <div class="eyebrow">GP Recruitment</div>
+      <h1>GP Jobs Board</h1>
+    </div>
+  </div>
+  <div class="filterbar">
+    <div class="row1">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
+        <input id="searchInput" type="text" placeholder="Search by practice or suburb…">
+      </div>
+      <select id="sortSelect">
+        <option value="updated_desc">Newest updated</option>
+        <option value="updated_asc">Oldest updated</option>
+        <option value="state_asc">State (A–Z)</option>
+        <option value="practice_asc">Practice (A–Z)</option>
+      </select>
+      <button class="morefilters-btn" id="moreBtn">⚙ More filters <span class="n" id="moreCount">0</span></button>
+    </div>
+    <div class="chip-row" id="stateChips"></div>
+    <div class="more-panel" id="morePanel">
+      <div class="more-group"><div class="more-group-title">DPA status</div><div class="chip-row" id="dpaChips"></div></div>
+      <div class="more-group"><div class="more-group-title">GP type</div><div class="chip-row" id="gpTypeChips"></div></div>
+      <div class="more-group"><div class="more-group-title">Billing type</div><div class="chip-row" id="billingChips"></div></div>
+      <div class="more-group"><div class="more-group-title">Permanency</div><div class="chip-row" id="permChips"></div></div>
+      <div class="more-group"><div class="more-group-title">Vacancy status</div><div class="chip-row" id="vacChips"></div></div>
+      <div class="more-actions"><button class="reset-link" id="resetBtn">Reset all filters</button></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="results-line" id="loadStatusLine">Loading live roles from Google Sheets…</div>
+  <div class="results-line" id="resultsLine" style="display:none;">Showing <strong id="resultsCount">0</strong> of <strong id="resultsTotal">0</strong> roles</div>
+  <div class="grid" id="grid"><div class="empty-state"><h3>Loading roles…</h3><div>Pulling the latest listings from Google Sheets.</div></div></div>
+  <div class="load-more-wrap" id="loadMoreWrap" style="display:none;">
+    <button class="load-more-btn" id="loadMoreBtn">Load more roles</button>
+    <span class="load-more-sub" id="loadMoreSub"></span>
+  </div>
+</div>
+
+<footer>The Doctor Network · GP roles list, drafted for review — pay, billing and vacancy details should be confirmed with the TDN team before an offer is made.</footer>
+
+<script>
+/* ============================================================
+   LIVE DATA SOURCE
+   The board reads its 259+ roles from 13 Google Sheets that
+   Cydney owns and edits directly — 12 sheets holding the existing
+   roles, split up to stay under upload size limits, plus one
+   "New Roles" sheet for anything she adds going forward.
+   IMPORTANT: each of these 13 sheets must be shared as
+   "Anyone with the link can view" in Google Sheets, or the CSV
+   export below will fail for that sheet.
+   ============================================================ */
+const SHEET_IDS = [
+  '1jzyVxJWPr8gJiGwA6x8FppcovYcMUE27vUI-KJx8x7M', // Part 1
+  '1w_TXJJmnUibHVJ7R-ISrsViJXc5oXeeh28uxYG7AHC0', // Part 2
+  '1pH2wmuZGHn64nhMbCdh5i3F90ZM9MfK8bAtbHbMNYeY', // Part 3
+  '1kmDYwwQWvrS_2a1V0zTG02bw57pfjvO__agbEEqlHh8', // Part 4
+  '1aNyYuKJmA7kkUF9xC77zuTA5UWdSA48eM6X_3nlwEP0', // Part 5
+  '1QoHuaAEwWJoqBkEdI9LOILu38c292zQZTGmi_9G7M6A', // Part 6
+  '1cUD0MX80zoWCFz-EtAfhlNDAEe7KI1TSv4kBFjRIrhk', // Part 7
+  '1Rny7bpj1kkGEyKaXFOqwZ-A_fr56LTIYdqEPWWe6hSI', // Part 8
+  '1hRKJkwirmokSnym5__7XbXgCepTYq1z0GTHmeHpuxk0', // Part 9
+  '1vCi9uWXE6Rcq0kluzEN0owsNL-I_M6cL-i2z5g5Vk-0', // Part 10
+  '1_WoVP2hS9QMhLJWbt9g4xqZoixW00WJlRvg-LI1W4ec', // Part 11
+  '1G7HIfIC1WRFYW1_OgBBJrE0cZpUX3X5PS7g_AxDP8ks', // Part 12
+  '1l5NoLYMth4lP7H-_fWrMfqYFL4WliST5pONatYFauYY', // New Roles (Cydney adds here)
+];
+function gvizUrl(id){ return `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv&gid=0`; }
+
+/* ---- Cydney's contact details for the per-job CTA buttons ---- */
+const CYDNEY_PHONE_TEL = '+61426816176';   // used for the "Call" link
+const CYDNEY_PHONE_WA  = '61426816176';    // used for the WhatsApp link (no leading + or 0)
+const CYDNEY_EMAIL     = 'Cydney@TheDoctorNetwork.com.au';
+
+/* ---- CSV parser: handles quoted fields, embedded commas/newlines, "" escaped quotes ---- */
+function parseCSV(text){
+  const rows = []; let row = [], field = '', i = 0, inQuotes = false; const n = text.length;
+  while(i < n){
+    const c = text[i];
+    if(inQuotes){
+      if(c === '"'){ if(text[i+1] === '"'){ field += '"'; i += 2; continue; } inQuotes = false; i++; continue; }
+      field += c; i++; continue;
+    } else {
+      if(c === '"'){ inQuotes = true; i++; continue; }
+      if(c === ','){ row.push(field); field=''; i++; continue; }
+      if(c === '\r'){ i++; continue; }
+      if(c === '\n'){ row.push(field); rows.push(row); row=[]; field=''; i++; continue; }
+      field += c; i++; continue;
+    }
+  }
+  if(field.length || row.length){ row.push(field); rows.push(row); }
+  return rows.filter(r => r.length>1 || (r.length===1 && r[0].trim()!==''));
+}
+
+/* ---- normalization: keeps freeform entries Cydney types into "New Roles" filterable ---- */
+function cleanText(v){ return (v==null) ? '' : String(v).trim(); }
+function fallback(v, def){ const t = cleanText(v); return t ? t : (def!==undefined ? def : 'Not specified'); }
+function normState(v){
+  const up = cleanText(v).toUpperCase();
+  const known = ['NSW','VIC','QLD','WA','SA','TAS','ACT','NT'];
+  return known.includes(up) ? up : (up || 'Not specified');
+}
+function normDpa(v){
+  const low = cleanText(v).toLowerCase();
+  if(!low) return 'Not specified';
+  if(low.includes('exempt')) return 'DPA Exempt';
+  if(low.includes('mm1')) return 'DPA – MM1';
+  if(/mm[2-7]/.test(low) || low.includes('mm2-7')) return 'DPA – MM2-7';
+  if(low.replace(/[\s-]/g,'').includes('nondpa')) return 'Non-DPA';
+  return 'Not specified';
+}
+function normGpType(v){
+  const low = cleanText(v).toLowerCase();
+  if(!low) return 'Not specified';
+  const hasNonVr = low.includes('non-vr') || low.includes('non vr');
+  const hasVr = low.includes('vr');
+  if(hasVr && hasNonVr) return 'VR or Non-VR';
+  if(hasVr) return 'VR GP';
+  return 'Not specified';
+}
+function normBilling(v){
+  const low = cleanText(v).toLowerCase();
+  if(!low) return 'Not specified';
+  const hasBulk = low.includes('bulk'), hasMixed = low.includes('mixed');
+  if(hasBulk && hasMixed) return 'Bulk / Mixed';
+  if(hasBulk) return 'Bulk Billing';
+  if(hasMixed) return 'Mixed';
+  if(low.includes('private')) return 'Private Billing';
+  if(low.includes('negotiable')) return 'Negotiable';
+  return 'Not specified';
+}
+function normPerm(v){
+  const low = cleanText(v).toLowerCase();
+  if(!low) return 'Not specified';
+  const hasFull = low.includes('full'), hasPart = low.includes('part');
+  if(hasFull && hasPart) return 'Full Time / Part Time';
+  if(hasFull) return 'Full Time';
+  if(hasPart) return 'Part Time';
+  return 'Not specified';
+}
+function normVacancy(v){
+  const low = cleanText(v).toLowerCase();
+  if(!low) return 'Will Update Soon';
+  if(low.includes('no vacancy') || low.includes('closed') || low.includes('filled')) return 'No Vacancy';
+  if(low.includes('update')) return 'Will Update Soon';
+  if(low.includes('hiring') || low.includes('open')) return 'Hiring';
+  return 'Will Update Soon';
+}
+function normDate(v){
+  const t = cleanText(v);
+  if(!t) return '';
+  const m = t.match(/^(\d{4}-\d{2}-\d{2})/);
+  if(m) return m[1];
+  const d = new Date(t);
+  return isNaN(d) ? '' : d.toISOString().slice(0,10);
+}
+function splitSuburb(raw){
+  const suburbFull = cleanText(raw);
+  if(!suburbFull) return { suburb:'Not specified', suburbFull:'', postcode:'' };
+  let postcode = '', rest = suburbFull;
+  const m = suburbFull.match(/(\d{4})(?!.*\d{4})/); // the last 4-digit run in the string
+  if(m){
+    postcode = m[1];
+    const idx = suburbFull.lastIndexOf(postcode);
+    rest = suburbFull.slice(0, idx) + suburbFull.slice(idx + postcode.length);
+  }
+  rest = rest.replace(/\b(NSW|VIC|QLD|WA|SA|TAS|ACT|NT)\b\.?/ig, '');
+  rest = rest.replace(/^[,\s]+|[,\s]+$/g, '').trim();
+  rest = rest.replace(/\s+[A-Za-z]$/, '').trim(); // strip a stray single-letter state code left glued to the postcode (e.g. "Dandenong V3175")
+  if(!rest) rest = suburbFull.replace(/\d{4}/g,'').replace(/,/g,'').trim();
+  return { suburb: rest || 'Not specified', suburbFull, postcode };
+}
+
+let JOBS = [];
+let nextId = 1;
+const loadStatus = { total: SHEET_IDS.length, ok: 0, failed: 0 };
+
+function rowToJob(cols){
+  const [statesRaw, practiceRaw, suburbRaw, gpTypeRaw, dpaRaw, startRaw, permRaw, billingRaw, billingPctRaw, payRateRaw, offerRaw, vacRaw, dateRaw] = cols;
+  const practice = cleanText(practiceRaw);
+  if(!practice && !cleanText(suburbRaw)) return null; // skip fully blank rows (e.g. trailing blank lines)
+  const { suburb, suburbFull, postcode } = splitSuburb(suburbRaw);
+  return {
+    id: nextId++,
+    state: normState(statesRaw),
+    practice: fallback(practice, 'Not specified'),
+    suburb, suburbFull, postcode,
+    gpType: normGpType(gpTypeRaw),
+    dpaStatus: normDpa(dpaRaw),
+    startDate: fallback(startRaw, 'Not specified'),
+    permanency: normPerm(permRaw),
+    billingType: normBilling(billingRaw),
+    billingPct: fallback(billingPctRaw, 'Not specified'),
+    payRate: fallback(payRateRaw, 'Not specified'),
+    offerDetails: cleanText(offerRaw),
+    vacancyStatus: normVacancy(vacRaw),
+    dateUpdated: normDate(dateRaw),
+  };
+}
+
+async function fetchSheet(id){
+  const res = await fetch(gvizUrl(id), { credentials: 'omit' });
+  if(!res.ok) throw new Error('HTTP '+res.status);
+  const text = await res.text();
+  if(/^\s*<(!DOCTYPE|html)/i.test(text)) throw new Error('Sheet is not shared publicly');
+  return parseCSV(text);
+}
+
+async function loadAllJobs(){
+  const results = await Promise.allSettled(SHEET_IDS.map(fetchSheet));
+  const jobs = [];
+  results.forEach(r=>{
+    if(r.status === 'fulfilled'){
+      loadStatus.ok++;
+      r.value.forEach((cols, idx)=>{
+        if(idx===0 && cleanText(cols[0]).toLowerCase()==='states') return; // skip repeated header row
+        const job = rowToJob(cols);
+        if(job) jobs.push(job);
+      });
+    } else {
+      loadStatus.failed++;
+    }
+  });
+  return jobs;
+}
+
+/* ============================================================
+   FILTERING / RENDERING (unchanged behaviour, now data-driven)
+   ============================================================ */
+const STATE_ORDER = ['NSW','VIC','QLD','WA','SA','TAS','ACT','NT'];
+const DPA_ORDER = ['DPA – MM1','DPA – MM2-7','Non-DPA','DPA Exempt','Not specified'];
+const GPTYPE_ORDER = ['VR GP','VR or Non-VR','Not specified'];
+const BILLING_ORDER = ['Bulk Billing','Mixed','Bulk / Mixed','Private Billing','Negotiable','Not specified'];
+const PERM_ORDER = ['Full Time','Part Time','Full Time / Part Time','Not specified'];
+const VAC_ORDER = ['Hiring','Will Update Soon','No Vacancy'];
+
+function countBy(field, allowed){ const c={}; allowed.forEach(v=>c[v]=0); JOBS.forEach(j=>{ if(c[j[field]]!==undefined) c[j[field]]++; }); return c; }
+
+let state, DEFAULTS;
+
+function buildChips(containerId, field, order, stateSet){
+  const counts = countBy(field, order);
+  const el = document.getElementById(containerId);
+  el.innerHTML = order.filter(v=>counts[v]>0).map(v=>
+    `<button class="chip ${stateSet.has(v)?'active':''}" data-field="${field}" data-value="${v.replace(/"/g,'&quot;')}">${v}<span class="cnt">${counts[v]}</span></button>`
+  ).join('');
+}
+
+function updateMoreCount(){
+  let n = 0;
+  ['dpaStatus','gpType','billingType','permanency','vacancyStatus'].forEach(f=>{
+    const allCount = f==='vacancyStatus' ? VAC_ORDER.length : {dpaStatus:DPA_ORDER,gpType:GPTYPE_ORDER,billingType:BILLING_ORDER,permanency:PERM_ORDER}[f].length;
+    if(state[f].size < allCount) n++;
+  });
+  document.getElementById('moreCount').textContent = n;
+  document.getElementById('moreCount').style.display = n ? 'inline' : 'none';
+}
+
+function initFiltersAndListeners(){
+  state = {
+    search:'', sort:'updated_desc',
+    state:new Set(STATE_ORDER.filter(s=>countBy('state',STATE_ORDER)[s]>0)),
+    dpaStatus:new Set(DPA_ORDER), gpType:new Set(GPTYPE_ORDER), billingType:new Set(BILLING_ORDER),
+    permanency:new Set(PERM_ORDER), vacancyStatus:new Set(['Hiring','Will Update Soon']),
+  };
+  DEFAULTS = {
+    state:[...state.state], dpaStatus:[...state.dpaStatus], gpType:[...state.gpType],
+    billingType:[...state.billingType], permanency:[...state.permanency], vacancyStatus:[...state.vacancyStatus]
+  };
+
+  buildChips('stateChips','state',STATE_ORDER,state.state);
+  buildChips('dpaChips','dpaStatus',DPA_ORDER,state.dpaStatus);
+  buildChips('gpTypeChips','gpType',GPTYPE_ORDER,state.gpType);
+  buildChips('billingChips','billingType',BILLING_ORDER,state.billingType);
+  buildChips('permChips','permanency',PERM_ORDER,state.permanency);
+  buildChips('vacChips','vacancyStatus',VAC_ORDER,state.vacancyStatus);
+  updateMoreCount();
+
+  document.querySelectorAll('.filterbar').forEach(bar=>{
+    bar.addEventListener('click', e=>{
+      const chip = e.target.closest('.chip');
+      if(!chip) return;
+      const set = state[chip.dataset.field];
+      const v = chip.dataset.value;
+      set.has(v) ? set.delete(v) : set.add(v);
+      chip.classList.toggle('active');
+      page = 1; updateMoreCount(); render();
+    });
+  });
+  document.getElementById('moreBtn').addEventListener('click', ()=>{
+    document.getElementById('morePanel').classList.toggle('open');
+  });
+  document.getElementById('searchInput').addEventListener('input', e=>{ state.search = e.target.value.trim().toLowerCase(); page = 1; render(); });
+  document.getElementById('sortSelect').addEventListener('change', e=>{ state.sort = e.target.value; page = 1; render(); });
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    state.search=''; document.getElementById('searchInput').value='';
+    state.state=new Set(DEFAULTS.state); state.dpaStatus=new Set(DEFAULTS.dpaStatus); state.gpType=new Set(DEFAULTS.gpType);
+    state.billingType=new Set(DEFAULTS.billingType); state.permanency=new Set(DEFAULTS.permanency); state.vacancyStatus=new Set(DEFAULTS.vacancyStatus);
+    document.querySelectorAll('.chip').forEach(chip=>{ chip.classList.toggle('active', state[chip.dataset.field].has(chip.dataset.value)); });
+    page = 1; updateMoreCount(); render();
+  });
+  document.getElementById('loadMoreBtn').addEventListener('click', ()=>{ page++; render(true); });
+}
+
+function timeAgo(dateStr){
+  if(!dateStr) return {text:'Not specified', stale:false};
+  const d = new Date(dateStr+'T00:00:00'); const now = new Date();
+  const diffDays = Math.floor((now-d)/86400000); const stale = diffDays>180;
+  if(diffDays<=0) return {text:'Updated today', stale};
+  if(diffDays===1) return {text:'Updated yesterday', stale};
+  if(diffDays<7) return {text:`Updated ${diffDays}d ago`, stale};
+  if(diffDays<30) return {text:`Updated ${Math.floor(diffDays/7)}w ago`, stale};
+  if(diffDays<365) return {text:`Updated ${Math.floor(diffDays/30)}mo ago`, stale};
+  return {text:`Updated ${Math.floor(diffDays/365)}y ago`, stale};
+}
+function dpaTagClass(v){
+  if(v==='DPA – MM1') return 'tag-dpa-mm1'; if(v==='DPA – MM2-7') return 'tag-dpa-mm27';
+  if(v==='DPA Exempt') return 'tag-dpa-exempt'; return '';
+}
+function vacBadgeClass(v){ if(v==='Hiring') return 'badge-vac-hiring'; if(v==='Will Update Soon') return 'badge-vac-soon'; return 'badge-vac-closed'; }
+function esc(s){ return (s||'').replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+
+/* ---- per-job CTA buttons: call / WhatsApp / email, prefilled with the role's details ---- */
+function ctaRow(j){
+  const where = [j.suburb, j.state].filter(v=>v && v!=='Not specified').join(', ');
+  const roleLine = j.practice + (where ? ' ('+where+')' : '');
+  const waText = encodeURIComponent(`Hi Cydney, I'm enquiring about the GP role at ${roleLine}.`);
+  const mailSubject = encodeURIComponent(`GP role enquiry – ${roleLine}`);
+  const mailBody = encodeURIComponent(`Hi Cydney,\n\nI'd like to find out more about the GP role at ${roleLine}.\n\nThanks,`);
+  return `
+    <div class="cta-row">
+      <a class="cta-btn" href="tel:${CYDNEY_PHONE_TEL}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Call
+      </a>
+      <a class="cta-btn" href="https://wa.me/${CYDNEY_PHONE_WA}?text=${waText}" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.29-1.39a9.87 9.87 0 0 0 4.7 1.2h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.8 14.16c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.11.11-1.8-.11-.41-.13-.94-.31-1.62-.6-2.85-1.23-4.71-4.09-4.85-4.28-.14-.19-1.16-1.54-1.16-2.94s.73-2.09.99-2.37c.26-.29.56-.36.75-.36.19 0 .38 0 .54.01.18.01.41-.07.64.49.24.58.81 2 .88 2.14.07.14.12.31.02.5-.09.19-.14.31-.28.47-.14.16-.29.36-.42.48-.14.14-.28.29-.12.57.16.28.71 1.17 1.52 1.9 1.05.94 1.93 1.23 2.21 1.37.28.14.44.12.61-.07.16-.19.69-.8.87-1.08.18-.28.36-.23.6-.14.24.09 1.53.72 1.79.85.26.13.44.19.5.3.07.11.07.61-.17 1.29z"/></svg>
+        WhatsApp
+      </a>
+      <a class="cta-btn" href="mailto:${CYDNEY_EMAIL}?subject=${mailSubject}&body=${mailBody}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+        Email
+      </a>
+    </div>`;
+}
+
+function getFiltered(){
+  return JOBS.filter(j=>{
+    if(!state.state.has(j.state)) return false;
+    if(!state.dpaStatus.has(j.dpaStatus)) return false;
+    if(!state.gpType.has(j.gpType)) return false;
+    if(!state.billingType.has(j.billingType)) return false;
+    if(!state.permanency.has(j.permanency)) return false;
+    if(!state.vacancyStatus.has(j.vacancyStatus)) return false;
+    if(state.search){
+      const hay = (j.practice+' '+j.suburb+' '+j.suburbFull).toLowerCase();
+      if(!hay.includes(state.search)) return false;
+    }
+    return true;
+  });
+}
+function sortJobs(rows){
+  const arr = rows.slice();
+  switch(state.sort){
+    case 'updated_desc': arr.sort((a,b)=> (b.dateUpdated||'').localeCompare(a.dateUpdated||'')); break;
+    case 'updated_asc': arr.sort((a,b)=> (a.dateUpdated||'9999').localeCompare(b.dateUpdated||'9999')); break;
+    case 'state_asc': arr.sort((a,b)=> a.state.localeCompare(b.state) || a.practice.localeCompare(b.practice)); break;
+    case 'practice_asc': arr.sort((a,b)=> a.practice.localeCompare(b.practice)); break;
+  }
+  return arr;
+}
+
+const PAGE_SIZE = 24;
+let page = 1;
+let openIds = new Set();
+function render(){
+  const allRows = sortJobs(getFiltered());
+  const rows = allRows.slice(0, page*PAGE_SIZE);
+  document.getElementById('resultsCount').textContent = allRows.length;
+  document.getElementById('resultsTotal').textContent = JOBS.length;
+  document.getElementById('headerCount').textContent = JOBS.length + ' GP roles';
+  const grid = document.getElementById('grid');
+  const loadMoreWrap = document.getElementById('loadMoreWrap');
+  if(!allRows.length){
+    grid.innerHTML = `<div class="empty-state"><h3>No roles match those filters</h3><div>Try widening your state or DPA selection, or reset all filters.</div></div>`;
+    loadMoreWrap.style.display = 'none';
+    return;
+  }
+  if(rows.length < allRows.length){
+    loadMoreWrap.style.display = 'flex';
+    document.getElementById('loadMoreSub').textContent = `Showing ${rows.length} of ${allRows.length} roles`;
+  } else {
+    loadMoreWrap.style.display = 'none';
+  }
+  grid.innerHTML = rows.map(j=>{
+    const ta = timeAgo(j.dateUpdated);
+    const isOpen = openIds.has(j.id);
+    return `
+    <div class="card ${isOpen?'open':''}" data-id="${j.id}">
+      <div class="card-top">
+        <span class="state-flag">${esc(j.state)}</span>
+        <span class="badge ${vacBadgeClass(j.vacancyStatus)}"><span class="dot"></span>${esc(j.vacancyStatus)}</span>
+      </div>
+      <div>
+        <div class="card-title">${esc(j.practice)}</div>
+        <div class="card-suburb">${esc(j.suburb)}${j.postcode?', '+j.postcode:''} · ${esc(j.state)}</div>
+      </div>
+      <div class="pay-block">
+        <span class="pay-value">${esc(j.payRate)}</span>
+        <span class="pay-sub">${esc(j.billingType)}${j.billingPct && j.billingPct!=='Not specified' ? ' · '+esc(j.billingPct) : ''}</span>
+      </div>
+      <div class="tag-row">
+        <span class="tag ${dpaTagClass(j.dpaStatus)}">${esc(j.dpaStatus)}</span>
+        <span class="tag">${esc(j.gpType)}</span>
+        <span class="tag">${esc(j.permanency)}</span>
+      </div>
+      <div class="mini-facts">
+        <div><div class="fl">Start date</div><div class="fv">${esc(j.startDate)}</div></div>
+        <div><div class="fl">Last updated</div><div class="fv mono">${j.dateUpdated||'Not specified'}</div></div>
+      </div>
+      <div class="offer-panel">${esc(j.offerDetails) || 'No further details recorded — check with the TDN team.'}</div>
+      ${ctaRow(j)}
+      <div class="card-footer">
+        <span class="updated-txt">${ta.text}${ta.stale?' ⚑':''}</span>
+        <button class="view-btn" data-toggle="${j.id}">View full offer <span class="chev">▾</span></button>
+      </div>
+    </div>`;
+  }).join('');
+
+  grid.querySelectorAll('.view-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const id = Number(btn.dataset.toggle);
+      openIds.has(id) ? openIds.delete(id) : openIds.add(id);
+      render();
+    });
+  });
+}
+
+/* ============================================================
+   BOOTSTRAP: fetch all 13 sheets, then build filters and render.
+   If some sheets fail (e.g. not yet shared publicly), the board
+   still renders with whatever loaded, and shows a small note.
+   ============================================================ */
+(async function boot(){
+  try{
+    JOBS = await loadAllJobs();
+  } catch(err){
+    JOBS = [];
+  }
+  const statusLine = document.getElementById('loadStatusLine');
+  const resultsLine = document.getElementById('resultsLine');
+  if(!JOBS.length){
+    statusLine.textContent = 'Couldn\'t load any roles from Google Sheets right now — check that all 13 sheets are shared as "Anyone with the link can view", then refresh this page.';
+    document.getElementById('headerCount').textContent = '0 GP roles';
+    document.getElementById('grid').innerHTML = `<div class="empty-state"><h3>No roles loaded</h3><div>The Google Sheets that back this board couldn't be reached. Refresh to try again.</div></div>`;
+    return;
+  }
+  statusLine.style.display = 'none';
+  resultsLine.style.display = 'block';
+  if(loadStatus.failed > 0){
+    statusLine.style.display = 'block';
+    statusLine.textContent = `Loaded ${loadStatus.ok} of ${loadStatus.total} role lists — ${loadStatus.failed} didn't load (check their sharing settings), so some roles may be missing. Refresh to retry.`;
+  }
+  initFiltersAndListeners();
+  render();
+})();
+</script>
