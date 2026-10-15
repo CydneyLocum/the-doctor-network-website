@@ -261,3 +261,6 @@ textarea{min-height:125px;resize:vertical}
 .policy h2:first-child{margin-top:0}
 .policy ul{padding-left:22px;display:grid;gap:10px}
 .policy p,.policy li{line-height:1.7}
+.article-meta{font-size:14px;color:#4b5a5e;margin-top:18px}
+.article-body h2{font-size:28px}
+.article-body p,.article-body li{font-size:18px}
