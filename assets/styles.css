@@ -113,6 +113,8 @@ h3{font-size:32px}
 .pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:22px}
 .pill{font-size:12px;font-weight:800;background:var(--mint);border-radius:999px;padding:7px 11px}
 .job-meta{color:#657277;font-size:14px;margin:16px 0 24px}
+.job-dates,.job-rate{margin-top:6px;color:var(--ink,#142328);font-weight:700}
+.job-rate{font-weight:600;color:#657277}
 
 .page-hero{padding:90px 0 75px;background:linear-gradient(135deg,#fff,#f7f3ec)}
 .page-hero h1{max-width:11ch}

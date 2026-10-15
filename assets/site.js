@@ -102,6 +102,24 @@ async function fetchJobs(){
   return Array.isArray(result.jobs) ? result.jobs : [];
 }
 
+// "19/10/2026" -> "19 Oct 2026"; other text ("ASAP", "Ongoing", "Feb 2027") is shown as written.
+function niceDate(v){
+  const s=String(v||'').trim();
+  const m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if(!m) return s;
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const mo=months[parseInt(m[2],10)-1];
+  return mo ? `${parseInt(m[1],10)} ${mo} ${m[3]}` : s;
+}
+
+function dateRange(job){
+  const start=niceDate(job.startDate), end=niceDate(job.endDate);
+  if(start && end) return `${start} – ${end}`;
+  if(start) return `From ${start}`;
+  if(end) return `Until ${end}`;
+  return '';
+}
+
 function jobCard(job){
   const id=encodeURIComponent(job.jobId || '');
   const title=esc(job.positionTitle || 'Medical opportunity');
@@ -111,6 +129,8 @@ function jobCard(job){
   const type=esc(job.employmentType || '');
   const sector=esc(job.sector || '');
   const summary=esc(job.shortSummary || '');
+  const dates=esc(dateRange(job));
+  const rate=esc(job.salaryRate || '');
   const search=esc(`${job.positionTitle||''} ${job.specialty||''} ${job.location||''}`.toLowerCase());
 
   return `<article class="job-card"
@@ -122,7 +142,7 @@ function jobCard(job){
     <div class="pills">${type?`<span class="pill">${type}</span>`:''}${sector?`<span class="pill">${sector}</span>`:''}</div>
     <h3>${title}</h3>
     <p>${summary}</p>
-    <div class="job-meta">${specialty}${specialty&&location?' · ':''}${location}</div>
+    <div class="job-meta">${specialty}${specialty&&location?' · ':''}${location}${dates?`<div class="job-dates">${dates}</div>`:''}${rate?`<div class="job-rate">${rate}</div>`:''}</div>
     <a class="text-link" href="opportunity.html?id=${id}">View opportunity →</a>
   </article>`;
 }
@@ -243,7 +263,8 @@ async function loadJobDetail(){
     if(j.roleDetails) parts.push(`<h3>Role details</h3><p>${esc(j.roleDetails).replace(/\n/g,'<br>')}</p>`);
     if(j.whyConsiderIt) parts.push(`<h3>Why consider the opportunity</h3><p>${esc(j.whyConsiderIt).replace(/\n/g,'<br>')}</p>`);
     if(j.locationInformation) parts.push(`<h3>Location</h3><p>${esc(j.locationInformation).replace(/\n/g,'<br>')}</p>`);
-    if(j.salaryRate) parts.push(`<div class="job-detail-meta"><span class="pill">${esc(j.salaryRate)}</span></div>`);
+    const range=dateRange(j);
+    if(j.salaryRate || range) parts.push(`<div class="job-detail-meta">${range?`<span class="pill">${esc(range)}</span> `:''}${j.salaryRate?`<span class="pill">${esc(j.salaryRate)}</span>`:''}</div>`);
     detail.innerHTML=parts.join('') || '<p>Further details are available in a confidential conversation.</p>';
 
     // SEO: page-specific description, canonical and share tags
@@ -263,6 +284,7 @@ async function loadJobDetail(){
       htmlBlock('Role details',j.roleDetails),
       htmlBlock('Why consider the opportunity',j.whyConsiderIt),
       htmlBlock('Location',j.locationInformation),
+      htmlBlock('Dates',dateRange(j)),
       htmlBlock('Salary / rate',j.salaryRate)
     ].join('') || esc(j.positionTitle || '');
     const typeText=String(j.employmentType || '').toLowerCase();
