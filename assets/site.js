@@ -270,7 +270,12 @@ async function loadJobDetail(){
     if(typeText.includes('perm')) empType.push('FULL_TIME');
     if(typeText.includes('locum') || typeText.includes('temp') || typeText.includes('contract')) empType.push('TEMPORARY','CONTRACTOR');
     if(typeText.includes('part')) empType.push('PART_TIME');
-    const isoDate=v=>{ if(!v) return ''; const d=new Date(v); return isNaN(d) ? '' : d.toISOString().slice(0,10); };
+    const isoDate=v=>{
+      if(!v) return '';
+      const au=String(v).trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/); // DD/MM/YYYY from the sheet
+      if(au) return `${au[3]}-${au[2].padStart(2,'0')}-${au[1].padStart(2,'0')}`;
+      const d=new Date(v); return isNaN(d) ? '' : d.toISOString().slice(0,10);
+    };
     const posted=isoDate(j.dateAdded) || isoDate(j.lastUpdated);
     const orgName=(j.organisationDisplay && j.organisationDisplay!=='Confidential') ? j.organisationDisplay : 'The Doctor Network';
 
