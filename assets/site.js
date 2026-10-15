@@ -205,6 +205,16 @@ async function loadHomeJobs(){
   }
 }
 
+function setHeadTag(selector,attrs,key,value){
+  let el=document.head.querySelector(selector);
+  if(!el){
+    el=document.createElement(attrs.rel?'link':'meta');
+    Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));
+    document.head.appendChild(el);
+  }
+  el.setAttribute(key,value);
+}
+
 async function loadJobDetail(){
   const title=document.getElementById('jobTitle');
   if(!title) return;
@@ -236,15 +246,55 @@ async function loadJobDetail(){
     if(j.salaryRate) parts.push(`<div class="job-detail-meta"><span class="pill">${esc(j.salaryRate)}</span></div>`);
     detail.innerHTML=parts.join('') || '<p>Further details are available in a confidential conversation.</p>';
 
+    // SEO: page-specific description, canonical and share tags
+    const pageUrl='https://thedoctornetwork.com.au/opportunity.html?id='+encodeURIComponent(j.jobId || id);
+    const metaDesc=(j.shortSummary || `${j.positionTitle || 'Medical opportunity'} in ${[j.location,j.state].filter(Boolean).join(', ')}`).slice(0,155);
+    setHeadTag('meta[name="description"]',{name:'description'},'content',metaDesc);
+    setHeadTag('link[rel="canonical"]',{rel:'canonical'},'href',pageUrl);
+    setHeadTag('meta[property="og:url"]',{property:'og:url'},'content',pageUrl);
+    setHeadTag('meta[property="og:title"]',{property:'og:title'},'content',document.title);
+    setHeadTag('meta[property="og:description"]',{property:'og:description'},'content',metaDesc);
+
+    // Google for Jobs structured data (requires title, description, datePosted, hiringOrganization, jobLocation)
+    const htmlBlock=(label,text)=>text?`<p><strong>${esc(label)}</strong></p><p>${esc(text).replace(/\n/g,'<br>')}</p>`:'';
+    const fullDescription=[
+      j.shortSummary?`<p>${esc(j.shortSummary)}</p>`:'',
+      htmlBlock('Overview',j.overview),
+      htmlBlock('Role details',j.roleDetails),
+      htmlBlock('Why consider the opportunity',j.whyConsiderIt),
+      htmlBlock('Location',j.locationInformation),
+      htmlBlock('Salary / rate',j.salaryRate)
+    ].join('') || esc(j.positionTitle || '');
+    const typeText=String(j.employmentType || '').toLowerCase();
+    const empType=[];
+    if(typeText.includes('perm')) empType.push('FULL_TIME');
+    if(typeText.includes('locum') || typeText.includes('temp') || typeText.includes('contract')) empType.push('TEMPORARY','CONTRACTOR');
+    if(typeText.includes('part')) empType.push('PART_TIME');
+    const isoDate=v=>{ if(!v) return ''; const d=new Date(v); return isNaN(d) ? '' : d.toISOString().slice(0,10); };
+    const posted=isoDate(j.dateAdded) || isoDate(j.lastUpdated);
+    const orgName=(j.organisationDisplay && j.organisationDisplay!=='Confidential') ? j.organisationDisplay : 'The Doctor Network';
+
     const schema={
       "@context":"https://schema.org",
       "@type":"JobPosting",
       "title":j.positionTitle || '',
-      "description":j.overview || j.shortSummary || '',
-      "employmentType":j.employmentType || '',
+      "description":fullDescription,
       "identifier":{"@type":"PropertyValue","name":"The Doctor Network","value":j.jobId || ''},
-      "jobLocation":{"@type":"Place","address":{"@type":"PostalAddress","addressRegion":j.state || '',"addressCountry":"AU"}}
+      "hiringOrganization":{"@type":"Organization","name":orgName,"sameAs":"https://thedoctornetwork.com.au/","logo":"https://thedoctornetwork.com.au/assets/logo-square.png"},
+      "jobLocation":{"@type":"Place","address":{"@type":"PostalAddress","addressLocality":j.location || '',"addressRegion":j.state || '',"addressCountry":"AU"}},
+      "directApply":true,
+      "url":pageUrl
     };
+    if(posted) schema.datePosted=posted;
+    if(empType.length) schema.employmentType=[...new Set(empType)];
+    if(j.specialty) schema.occupationalCategory=j.specialty;
+    const salaryMatch=String(j.salaryRate||'').replace(/,/g,'').match(/\d+(\.\d+)?/);
+    const salaryNum=salaryMatch?parseFloat(salaryMatch[0]):0;
+    if(salaryNum){
+      const s=String(j.salaryRate).toLowerCase();
+      const unit=(s.includes('hour')||s.includes('/hr')||/\bph\b/.test(s))?'HOUR':s.includes('day')?'DAY':s.includes('week')?'WEEK':(salaryNum>10000?'YEAR':'');
+      if(unit) schema.baseSalary={"@type":"MonetaryAmount","currency":"AUD","value":{"@type":"QuantitativeValue","value":salaryNum,"unitText":unit}};
+    }
     const script=document.createElement('script');
     script.type='application/ld+json';
     script.textContent=JSON.stringify(schema);
