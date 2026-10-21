@@ -99,7 +99,21 @@ async function fetchJobs(){
   const response=await fetch(API_URL + '?action=jobs&_=' + Date.now(), {redirect:'follow'});
   const result=await response.json();
   if(!result.ok) throw new Error(result.error || 'Could not load opportunities.');
+  await loadJobPages();
   return Array.isArray(result.jobs) ? result.jobs : [];
+}
+
+// job id -> static job page (built every few hours by scripts/build_job_pages.py)
+let JOB_PAGES={};
+async function loadJobPages(){
+  try{
+    const r=await fetch('job-pages.json?_=' + Math.floor(Date.now()/600000));
+    if(r.ok) JOB_PAGES=await r.json();
+  }catch(e){}
+}
+function jobLink(job){
+  const page=JOB_PAGES[String(job.jobId||'').trim()];
+  return page && page.page ? page.page : 'opportunity.html?id=' + encodeURIComponent(job.jobId || '');
 }
 
 // "19/10/2026" -> "19 Oct 2026"; other text ("ASAP", "Ongoing", "Feb 2027") is shown as written.
@@ -114,6 +128,7 @@ function niceDate(v){
 
 function dateRange(job){
   const start=niceDate(job.startDate), end=niceDate(job.endDate);
+  if(start && !end && !/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(String(job.startDate||'').trim())) return `Start: ${start}`;
   if(start && end) return `${start} – ${end}`;
   if(start) return `From ${start}`;
   if(end) return `Until ${end}`;
@@ -143,7 +158,7 @@ function jobCard(job){
     <h3>${title}</h3>
     <p>${summary}</p>
     <div class="job-meta">${specialty}${specialty&&location?' · ':''}${location}${dates?`<div class="job-dates">${dates}</div>`:''}${rate?`<div class="job-rate">${rate}</div>`:''}</div>
-    <a class="text-link" href="opportunity.html?id=${id}">View job →</a>
+    <a class="text-link" href="${esc(jobLink(job))}">View job →</a>
   </article>`;
 }
 
@@ -194,6 +209,7 @@ async function loadJobsPage(){
     fillSelect('sector',jobs.map(j=>j.sector),'Private / Public');
     activateJobFilters([...grid.querySelectorAll('.job-card')]);
   }catch(err){
+    if(grid.querySelector('.job-card')){ if(status) status.textContent=''; return; }
     grid.innerHTML='';
     if(status){
       status.innerHTML=API_CONFIGURED
@@ -216,6 +232,7 @@ async function loadHomeJobs(){
       status.innerHTML='No public opportunities are listed right now. <a class="text-link" href="join.html">Join the Network →</a>';
     }
   }catch(err){
+    if(grid.querySelector('.job-card')){ if(status) status.style.display='none'; return; }
     grid.innerHTML='';
     if(status){
       status.innerHTML=API_CONFIGURED

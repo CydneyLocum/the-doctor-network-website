@@ -266,3 +266,6 @@ textarea{min-height:125px;resize:vertical}
 .article-meta{font-size:14px;color:#4b5a5e;margin-top:18px}
 .article-body h2{font-size:21px}
 .article-body p,.article-body li{font-size:18px}
+.job-facts{list-style:none;padding:0;margin:0 0 26px;display:grid;gap:8px;font-size:17px}
+.job-body p{font-size:17px;line-height:1.7}
+.job-back{margin-top:28px}

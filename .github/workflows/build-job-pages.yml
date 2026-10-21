@@ -1,0 +1,43 @@
+name: Build job pages
+
+# Turns every live job in the TDN Job Board sheet into its own page for Google.
+# Runs every 3 hours, after changes to the builder, and on demand (Actions tab > Build job pages > Run workflow).
+on:
+  schedule:
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/build_job_pages.py"
+      - ".github/workflows/build-job-pages.yml"
+      - "opportunity.html"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-job-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build pages from live jobs
+        run: python3 scripts/build_job_pages.py
+      - name: Publish changes
+        run: |
+          git config user.name "TDN job page builder"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A job-*.html job-pages.json sitemap.xml opportunities.html index.html
+          if git diff --cached --quiet; then
+            echo "No job changes."
+          else
+            git commit -m "Update job pages from the live jobs sheet"
+            git push
+          fi
