@@ -191,13 +191,13 @@ footer{ max-width:1280px; margin:0 auto 40px; padding:0 20px; color:var(--ink-40
   </div>
 </div>
 
-<footer>The Doctor Network · GP roles list, drafted for review — pay, billing and vacancy details should be confirmed with the TDN team before an offer is made.</footer>
+<footer>The Doctor Network · GP roles list, drafted for review. Pay, billing and vacancy details should be confirmed with the TDN team before an offer is made.</footer>
 
 <script>
 /* ============================================================
    LIVE DATA SOURCE
    The board reads its 259+ roles from 13 Google Sheets that
-   Cydney owns and edits directly — 12 sheets holding the existing
+   Cydney owns and edits directly: 12 sheets holding the existing
    roles, split up to stay under upload size limits, plus one
    "New Roles" sheet for anything she adds going forward.
    IMPORTANT: each of these 13 sheets must be shared as
@@ -572,7 +572,7 @@ function render(){
         <div><div class="fl">Start date</div><div class="fv">${esc(j.startDate)}</div></div>
         <div><div class="fl">Last updated</div><div class="fv mono">${j.dateUpdated||'Not specified'}</div></div>
       </div>
-      <div class="offer-panel">${esc(j.offerDetails) || 'No further details recorded — check with the TDN team.'}</div>
+      <div class="offer-panel">${esc(j.offerDetails) || 'No further details recorded. Check with the TDN team.'}</div>
       ${ctaRow(j)}
       <div class="card-footer">
         <span class="updated-txt">${ta.text}${ta.stale?' ⚑':''}</span>
@@ -604,7 +604,7 @@ function render(){
   const statusLine = document.getElementById('loadStatusLine');
   const resultsLine = document.getElementById('resultsLine');
   if(!JOBS.length){
-    statusLine.textContent = 'Couldn\'t load any roles from Google Sheets right now — check that all 13 sheets are shared as "Anyone with the link can view", then refresh this page.';
+    statusLine.textContent = 'Couldn\'t load any roles from Google Sheets right now. Check that all 13 sheets are shared as "Anyone with the link can view", then refresh this page.';
     document.getElementById('headerCount').textContent = '0 GP roles';
     document.getElementById('grid').innerHTML = `<div class="empty-state"><h3>No roles loaded</h3><div>The Google Sheets that back this board couldn't be reached. Refresh to try again.</div></div>`;
     return;
@@ -613,7 +613,7 @@ function render(){
   resultsLine.style.display = 'block';
   if(loadStatus.failed > 0){
     statusLine.style.display = 'block';
-    statusLine.textContent = `Loaded ${loadStatus.ok} of ${loadStatus.total} role lists — ${loadStatus.failed} didn't load (check their sharing settings), so some roles may be missing. Refresh to retry.`;
+    statusLine.textContent = `Loaded ${loadStatus.ok} of ${loadStatus.total} role lists. ${loadStatus.failed} didn't load (check their sharing settings), so some roles may be missing. Refresh to retry.`;
   }
   initFiltersAndListeners();
   render();
