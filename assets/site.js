@@ -75,7 +75,7 @@ document.querySelectorAll('.demo-form').forEach(form=>{
 
       form.reset();
       if(status){
-        status.textContent='Thanks — your enquiry has been sent.';
+        status.textContent='Thanks! Your enquiry has been sent.';
         status.className='form-status success';
       }
       if(button) button.textContent='Sent ✓';
