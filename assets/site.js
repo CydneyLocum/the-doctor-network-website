@@ -143,7 +143,7 @@ function jobCard(job){
     <h3>${title}</h3>
     <p>${summary}</p>
     <div class="job-meta">${specialty}${specialty&&location?' · ':''}${location}${dates?`<div class="job-dates">${dates}</div>`:''}${rate?`<div class="job-rate">${rate}</div>`:''}</div>
-    <a class="text-link" href="opportunity.html?id=${id}">View opportunity →</a>
+    <a class="text-link" href="opportunity.html?id=${id}">View job →</a>
   </article>`;
 }
 
