@@ -291,23 +291,27 @@ def main():
         manifest = {}
     template = read("opportunity.html")
 
-    new_manifest, cards = {}, []
+    new_manifest, cards, written, seen = {}, [], set(), {}
     for j in jobs:
         jid = str(j["jobId"]).strip()
+        if jid in seen:
+            print(f"WARNING: Job ID {jid} is used twice ({seen[jid]} and {j.get('positionTitle')} – {j.get('location')}). "
+                  "Give each row its own Job ID in the sheet.")
+        seen[jid] = f"{j.get('positionTitle')} – {j.get('location')}"
         name = page_name(j)
         first_seen = (manifest.get(jid) or {}).get("firstPublished") or TODAY
         posted = iso(j.get("dateAdded")) or first_seen
         write(name, build_page(template, j, name, posted))
+        written.add(name)
         new_manifest[jid] = {"page": name, "title": j.get("positionTitle", ""), "firstPublished": first_seen,
                              "lastmod": iso(j.get("lastUpdated")) or posted}
         cards.append(static_card(j, name))
 
-    # remove pages for jobs that are no longer live (or were renamed)
-    keep = {v["page"] for v in new_manifest.values()}
-    for v in manifest.values():
-        if v.get("page") not in keep and re.match(r"^job-[a-z0-9-]+\.html$", v.get("page", "")) and os.path.exists(path(v["page"])):
-            os.remove(path(v["page"]))
-            print("removed", v["page"])
+    # remove pages for jobs that are no longer live (or were renamed); every job-*.html page is builder-owned
+    for f in sorted(os.listdir(ROOT)):
+        if re.match(r"^job-[a-z0-9-]+\.html$", f) and f not in written:
+            os.remove(path(f))
+            print("removed", f)
 
     write(MANIFEST, json.dumps(new_manifest, indent=1, sort_keys=True) + "\n")
 
