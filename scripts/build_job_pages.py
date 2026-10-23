@@ -148,6 +148,20 @@ def salary(v):
     return {"@type": "MonetaryAmount", "currency": "AUD", "value": value}
 
 
+def valid_through(j):
+    """When the listing expires for Google.
+
+    Live jobs are rebuilt every 3 hours and removed once unpublished, so the date just needs to
+    stay ahead of today while a job is live: at least 30 days out, rounded up to the 1st of the
+    next month (so pages only change monthly), or the placement end date if that is later.
+    """
+    today = dt.date.fromisoformat(TODAY)
+    ahead = today + dt.timedelta(days=30)
+    rolling = dt.date(ahead.year + (ahead.month == 12), ahead.month % 12 + 1, 1)
+    end = iso(j.get("endDate"))
+    return max(rolling.isoformat(), end) if end else rolling.isoformat()
+
+
 def job_schema(j, url, posted):
     desc = "".join(
         f"<p><strong>{lbl}</strong></p><p>{para(j.get(k))}</p>" if lbl else f"<p>{para(j.get(k))}</p>"
@@ -187,6 +201,7 @@ def job_schema(j, url, posted):
         s["baseSalary"] = salary(j.get("salaryRate"))
     if j.get("startDate") and iso(j.get("startDate")):
         s["jobStartDate"] = iso(j.get("startDate"))
+    s["validThrough"] = valid_through(j) + "T23:59:59+10:00"
     return s
 
 
