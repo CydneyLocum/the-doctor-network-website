@@ -127,7 +127,8 @@ h3{font-size:20px}
 label{font-size:13px;font-weight:800}
 input,select,textarea{width:100%;border:1px solid #cfd6d3;border-radius:13px;padding:13px 14px;background:white}
 textarea{min-height:125px;resize:vertical}
-.filter-bar{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:10px;margin-bottom:26px;background:white;border:1px solid var(--line);padding:12px;border-radius:20px}
+.filter-bar select[hidden]{display:none}
+.filter-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:26px;background:white;border:1px solid var(--line);padding:12px;border-radius:20px}
 .insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .insight{background:white;border-radius:24px;border:1px solid var(--line);overflow:hidden}
 .insight-art{height:180px;background:linear-gradient(135deg,var(--mint),var(--blush));position:relative}

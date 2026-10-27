@@ -135,10 +135,13 @@ function dateRange(job){
   return '';
 }
 
+function subOf(job){ return String(job.subSpecialty || job.subspecialty || '').trim(); }
+
 function jobCard(job){
   const id=encodeURIComponent(job.jobId || '');
   const title=esc(job.positionTitle || 'Medical opportunity');
   const specialty=esc(job.specialty || '');
+  const sub=esc(subOf(job));
   const location=esc(job.location || '');
   const state=esc(job.state || '');
   const type=esc(job.employmentType || '');
@@ -146,18 +149,19 @@ function jobCard(job){
   const summary=esc(job.shortSummary || '');
   const dates=esc(dateRange(job));
   const rate=esc(job.salaryRate || '');
-  const search=esc(`${job.positionTitle||''} ${job.specialty||''} ${job.location||''}`.toLowerCase());
+  const search=esc(`${job.positionTitle||''} ${job.specialty||''} ${subOf(job)} ${job.location||''}`.toLowerCase());
 
   return `<article class="job-card"
     data-search="${search}"
     data-specialty="${specialty}"
+    data-subspecialty="${sub}"
     data-state="${state}"
     data-type="${type}"
     data-sector="${sector}">
     <div class="pills">${type?`<span class="pill">${type}</span>`:''}${sector?`<span class="pill">${sector}</span>`:''}</div>
     <h3>${title}</h3>
     <p>${summary}</p>
-    <div class="job-meta">${specialty}${specialty&&location?' · ':''}${location}${dates?`<div class="job-dates">${dates}</div>`:''}${rate?`<div class="job-rate">${rate}</div>`:''}</div>
+    <div class="job-meta">${sub||specialty}${(sub||specialty)&&location?' · ':''}${location}${dates?`<div class="job-dates">${dates}</div>`:''}${rate?`<div class="job-rate">${rate}</div>`:''}</div>
     <a class="text-link" href="${esc(jobLink(job))}">View job →</a>
   </article>`;
 }
@@ -170,17 +174,18 @@ function fillSelect(id, values, firstLabel){
 }
 
 function activateJobFilters(cards){
-  const controls=['search','specialty','state','type','sector'].map(id=>document.getElementById(id)).filter(Boolean);
+  const controls=['search','specialty','subspecialty','state','type','sector'].map(id=>document.getElementById(id)).filter(Boolean);
   if(!controls.length) return;
   function filter(){
     const q=(document.getElementById('search')?.value||'').toLowerCase();
     const sp=document.getElementById('specialty')?.value||'';
+    const ss=document.getElementById('subspecialty')?.value||'';
     const st=document.getElementById('state')?.value||'';
     const ty=document.getElementById('type')?.value||'';
     const se=document.getElementById('sector')?.value||'';
     let shown=0;
     cards.forEach(c=>{
-      const ok=(!q||c.dataset.search.includes(q))&&(!sp||c.dataset.specialty===sp)&&(!st||c.dataset.state===st)&&(!ty||c.dataset.type===ty)&&(!se||c.dataset.sector===se);
+      const ok=(!q||c.dataset.search.includes(q))&&(!sp||c.dataset.specialty===sp)&&(!ss||c.dataset.subspecialty===ss)&&(!st||c.dataset.state===st)&&(!ty||c.dataset.type===ty)&&(!se||c.dataset.sector===se);
       c.style.display=ok?'block':'none';
       if(ok) shown++;
     });
@@ -204,6 +209,9 @@ async function loadJobsPage(){
     }
     grid.innerHTML=jobs.map(jobCard).join('');
     fillSelect('specialty',jobs.map(j=>j.specialty),'All specialties');
+    fillSelect('subspecialty',jobs.map(subOf),'All sub-specialties');
+    const subSel=document.getElementById('subspecialty');
+    if(subSel) subSel.hidden=!jobs.some(subOf);
     fillSelect('state',jobs.map(j=>j.state),'All states');
     fillSelect('type',jobs.map(j=>j.employmentType),'Permanent / Locum');
     fillSelect('sector',jobs.map(j=>j.sector),'Private / Public');
@@ -270,7 +278,7 @@ async function loadJobDetail(){
     document.title=`${j.positionTitle || 'Opportunity'} | The Doctor Network`;
     title.textContent=j.positionTitle || 'Medical opportunity';
     document.getElementById('jobSummary').textContent=j.shortSummary || '';
-    document.getElementById('jobPills').innerHTML=[j.employmentType,j.sector,j.location].filter(Boolean).map(x=>`<span class="pill">${esc(x)}</span>`).join('');
+    document.getElementById('jobPills').innerHTML=[j.employmentType,j.sector,subOf(j),j.location].filter(Boolean).map(x=>`<span class="pill">${esc(x)}</span>`).join('');
     document.getElementById('enquiryJobId').value=j.jobId || '';
     document.getElementById('enquiryJobTitle').value=j.positionTitle || '';
 
@@ -331,7 +339,7 @@ async function loadJobDetail(){
     };
     if(posted) schema.datePosted=posted;
     if(empType.length) schema.employmentType=[...new Set(empType)];
-    if(j.specialty) schema.occupationalCategory=j.specialty;
+    if(subOf(j) || j.specialty) schema.occupationalCategory=subOf(j) || j.specialty;
     const salaryMatch=String(j.salaryRate||'').replace(/,/g,'').match(/\d+(\.\d+)?/);
     const salaryNum=salaryMatch?parseFloat(salaryMatch[0]):0;
     if(salaryNum){

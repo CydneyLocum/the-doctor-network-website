@@ -195,8 +195,8 @@ def job_schema(j, url, posted):
     }
     if employment_types(j.get("employmentType")):
         s["employmentType"] = employment_types(j.get("employmentType"))
-    if j.get("specialty"):
-        s["occupationalCategory"] = j["specialty"]
+    if sub(j) or j.get("specialty"):
+        s["occupationalCategory"] = sub(j) or j["specialty"]
     if salary(j.get("salaryRate")):
         s["baseSalary"] = salary(j.get("salaryRate"))
     if j.get("startDate") and iso(j.get("startDate")):
@@ -220,6 +220,10 @@ def set_head(h, title, desc, url, og_type="article"):
     return h.replace("</title>", "</title>" + tags, 1)
 
 
+def sub(j):
+    return (j.get("subSpecialty") or j.get("subspecialty") or "").strip()
+
+
 def build_page(template, j, name, posted):
     url = f"{SITE}/{name}"
     where = place(j)
@@ -228,11 +232,11 @@ def build_page(template, j, name, posted):
     page_title = f"{title} | The Doctor Network"
     desc = (j.get("shortSummary") or "").strip()
     desc = (f"{desc}. " if desc and not desc.endswith(".") else (desc + " " if desc else "")) + \
-        f"{j.get('employmentType', '')} {j.get('specialty', '') or 'medical'} role in {where}. Enquire confidentially with The Doctor Network."
+        f"{j.get('employmentType', '')} {sub(j) or j.get('specialty', '') or 'medical'} role in {where}. Enquire confidentially with The Doctor Network."
     desc = re.sub(r"\s+", " ", desc).strip()[:158]
 
     j = dict(j, _dates=date_range(j))
-    pills = "".join(f'<span class="pill">{e(x)}</span>' for x in [j.get("employmentType"), j.get("sector"), j.get("specialty")] if x)
+    pills = "".join(f'<span class="pill">{e(x)}</span>' for x in [j.get("employmentType"), j.get("sector"), j.get("specialty"), sub(j)] if x)
     facts = [("Location", where), ("Dates", j["_dates"]), ("Rate / salary", j.get("salaryRate")),
              ("Organisation", j.get("organisationDisplay") if j.get("organisationDisplay") not in ("", "Confidential", None) else "")]
     facts_html = "".join(f"<li><strong>{lbl}:</strong> {e(v)}</li>" for lbl, v in facts if v)
@@ -247,7 +251,7 @@ def build_page(template, j, name, posted):
         body.append("<p>Further details are available in a confidential conversation. Send an enquiry and we'll be in touch.</p>")
     body.append('<p class="job-back"><a class="text-link" href="opportunities.html">← See all current jobs</a></p>')
 
-    main = (f'<section class="page-hero"><div class="shell"><div class="kicker">{e(j.get("specialty") or "Medical")} job · {e(j.get("state") or "Australia")}</div>'
+    main = (f'<section class="page-hero"><div class="shell"><div class="kicker">{e(sub(j) or j.get("specialty") or "Medical")} job · {e(j.get("state") or "Australia")}</div>'
             f'<h1>{e(j.get("positionTitle"))}</h1><p>{e(j.get("shortSummary"))}</p><div class="pills">{pills}</div></div></section>'
             f'<section class="section"><div class="shell content-grid"><article class="job-body">{"".join(body)}</article><aside>FORM</aside></div></section>')
 
@@ -267,7 +271,7 @@ def build_page(template, j, name, posted):
 
 
 def static_card(j, name):
-    meta = " · ".join(x for x in [j.get("specialty"), j.get("location")] if x)
+    meta = " · ".join(x for x in [sub(j) or j.get("specialty"), j.get("location")] if x)
     extra = "".join(f'<div class="{c}">{e(v)}</div>' for c, v in [("job-dates", date_range(j)), ("job-rate", j.get("salaryRate"))] if v)
     pills = "".join(f'<span class="pill">{e(x)}</span>' for x in [j.get("employmentType"), j.get("sector")] if x)
     return (f'<article class="job-card"><div class="pills">{pills}</div><h3>{e(j.get("positionTitle"))}</h3>'
