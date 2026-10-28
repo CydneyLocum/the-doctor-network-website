@@ -148,6 +148,11 @@ def salary(v):
     return {"@type": "MonetaryAmount", "currency": "AUD", "value": value}
 
 
+def is_telehealth(j):
+    text = " ".join(str(j.get(k) or "") for k in ("location", "positionTitle", "state")).lower()
+    return "telehealth" in text or "tele-health" in text
+
+
 def valid_through(j):
     """When the listing expires for Google.
 
@@ -193,6 +198,12 @@ def job_schema(j, url, posted):
         "directApply": True,
         "url": url,
     }
+    if is_telehealth(j):
+        # remote role: Google's way to mark work done from anywhere in Australia
+        s["jobLocationType"] = "TELECOMMUTE"
+        s["applicantLocationRequirements"] = {"@type": "Country", "name": "Australia"}
+        if not j.get("state"):
+            del s["jobLocation"]
     if employment_types(j.get("employmentType")):
         s["employmentType"] = employment_types(j.get("employmentType"))
     if sub(j) or j.get("specialty"):
