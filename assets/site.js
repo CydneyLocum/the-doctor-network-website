@@ -74,6 +74,9 @@ document.querySelectorAll('.demo-form').forEach(form=>{
       if(!result.ok) throw new Error(result.error || 'Your enquiry could not be sent.');
 
       form.reset();
+      if(typeof gtag==='function'){
+        gtag('event','generate_lead',{form_type:form.dataset.formType||'website_enquiry',page_path:location.pathname});
+      }
       if(status){
         status.textContent='Thanks! Your enquiry has been sent.';
         status.className='form-status success';
