@@ -1,4 +1,4 @@
-<!doctype html><html lang="en-AU"><head><meta charset="utf-8"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QEE73VMZ5W"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-QEE73VMZ5W');</script><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="../assets/favicon.png"><title>GP Jobs Australia | Locum & Permanent GP Jobs Board | The Doctor Network</title><meta name="description" content="Current GP locum, float and permanent jobs across Australia, including DPA locations. Call, WhatsApp or email to enquire."><link rel="canonical" href="https://thedoctornetwork.com.au/GPJobsBoard/"><meta property="og:type" content="website"><meta property="og:title" content="GP Jobs Board | The Doctor Network"><meta property="og:description" content="Current GP locum, float and permanent jobs across Australia."><meta property="og:url" content="https://thedoctornetwork.com.au/GPJobsBoard/"><meta property="og:image" content="https://thedoctornetwork.com.au/assets/og-image.jpg"><meta name="twitter:card" content="summary_large_image">
+<title>GP Jobs Board</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -117,8 +117,7 @@ select#sortSelect{ padding:9px 12px; border:1px solid var(--line); border-radius
 .cta-btn:hover{ border-color:var(--teal-600); color:var(--teal-700); background:var(--teal-100); }
 .cta-btn svg{ width:14px; height:14px; flex:none; }
 
-.card-footer{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding-top:10px; border-top:1px solid var(--line); }
-.updated-txt{ font-size:.76rem; color:var(--ink-400); font-family:"Manrope",sans-serif; }
+.card-footer{ display:flex; align-items:center; justify-content:flex-end; gap:8px; padding-top:10px; border-top:1px solid var(--line); }
 .view-btn{ background:none; border:none; color:var(--teal-700); font-weight:700; font-size:.82rem; cursor:pointer; display:flex; align-items:center; gap:4px; padding:2px; }
 .view-btn:hover{ text-decoration:underline; }
 .view-btn .chev{ transition:transform .18s ease; display:inline-block; }
@@ -126,7 +125,7 @@ select#sortSelect{ padding:9px 12px; border:1px solid var(--line); border-radius
 
 .offer-panel{ display:none; white-space:pre-line; font-size:.85rem; line-height:1.55; background:var(--paper-50); border:1px solid var(--line); border-radius:10px; padding:12px 14px; }
 .card.open .offer-panel{ display:block; }
-.mini-facts{ display:none; grid-template-columns:1fr 1fr; gap:8px 14px; font-size:.82rem; }
+.mini-facts{ display:none; grid-template-columns:1fr; gap:8px 14px; font-size:.82rem; }
 .card.open .mini-facts{ display:grid; }
 .mini-facts .fl{ color:var(--ink-400); font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; }
 .mini-facts .fv{ font-weight:600; }
@@ -191,13 +190,13 @@ footer{ max-width:1280px; margin:0 auto 40px; padding:0 20px; color:var(--ink-40
   </div>
 </div>
 
-<footer>The Doctor Network · GP roles list, drafted for review. Pay, billing and vacancy details should be confirmed with the TDN team before an offer is made.</footer>
+<footer>The Doctor Network · GP roles list, drafted for review — pay, billing and vacancy details should be confirmed with the TDN team before an offer is made.</footer>
 
 <script>
 /* ============================================================
    LIVE DATA SOURCE
    The board reads its 259+ roles from 13 Google Sheets that
-   Cydney owns and edits directly: 12 sheets holding the existing
+   Cydney owns and edits directly — 12 sheets holding the existing
    roles, split up to stay under upload size limits, plus one
    "New Roles" sheet for anything she adds going forward.
    IMPORTANT: each of these 13 sheets must be shared as
@@ -456,17 +455,6 @@ function initFiltersAndListeners(){
   document.getElementById('loadMoreBtn').addEventListener('click', ()=>{ page++; render(true); });
 }
 
-function timeAgo(dateStr){
-  if(!dateStr) return {text:'Not specified', stale:false};
-  const d = new Date(dateStr+'T00:00:00'); const now = new Date();
-  const diffDays = Math.floor((now-d)/86400000); const stale = diffDays>180;
-  if(diffDays<=0) return {text:'Updated today', stale};
-  if(diffDays===1) return {text:'Updated yesterday', stale};
-  if(diffDays<7) return {text:`Updated ${diffDays}d ago`, stale};
-  if(diffDays<30) return {text:`Updated ${Math.floor(diffDays/7)}w ago`, stale};
-  if(diffDays<365) return {text:`Updated ${Math.floor(diffDays/30)}mo ago`, stale};
-  return {text:`Updated ${Math.floor(diffDays/365)}y ago`, stale};
-}
 function dpaTagClass(v){
   if(v==='DPA – MM1') return 'tag-dpa-mm1'; if(v==='DPA – MM2-7') return 'tag-dpa-mm27';
   if(v==='DPA Exempt') return 'tag-dpa-exempt'; return '';
@@ -547,7 +535,6 @@ function render(){
     loadMoreWrap.style.display = 'none';
   }
   grid.innerHTML = rows.map(j=>{
-    const ta = timeAgo(j.dateUpdated);
     const isOpen = openIds.has(j.id);
     return `
     <div class="card ${isOpen?'open':''}" data-id="${j.id}">
@@ -570,12 +557,10 @@ function render(){
       </div>
       <div class="mini-facts">
         <div><div class="fl">Start date</div><div class="fv">${esc(j.startDate)}</div></div>
-        <div><div class="fl">Last updated</div><div class="fv mono">${j.dateUpdated||'Not specified'}</div></div>
       </div>
-      <div class="offer-panel">${esc(j.offerDetails) || 'No further details recorded. Check with the TDN team.'}</div>
+      <div class="offer-panel">${esc(j.offerDetails) || 'No further details recorded — check with the TDN team.'}</div>
       ${ctaRow(j)}
       <div class="card-footer">
-        <span class="updated-txt">${ta.text}${ta.stale?' ⚑':''}</span>
         <button class="view-btn" data-toggle="${j.id}">View full offer <span class="chev">▾</span></button>
       </div>
     </div>`;
@@ -604,7 +589,7 @@ function render(){
   const statusLine = document.getElementById('loadStatusLine');
   const resultsLine = document.getElementById('resultsLine');
   if(!JOBS.length){
-    statusLine.textContent = 'Couldn\'t load any roles from Google Sheets right now. Check that all 13 sheets are shared as "Anyone with the link can view", then refresh this page.';
+    statusLine.textContent = 'Couldn\'t load any roles from Google Sheets right now — check that all 13 sheets are shared as "Anyone with the link can view", then refresh this page.';
     document.getElementById('headerCount').textContent = '0 GP roles';
     document.getElementById('grid').innerHTML = `<div class="empty-state"><h3>No roles loaded</h3><div>The Google Sheets that back this board couldn't be reached. Refresh to try again.</div></div>`;
     return;
@@ -613,10 +598,9 @@ function render(){
   resultsLine.style.display = 'block';
   if(loadStatus.failed > 0){
     statusLine.style.display = 'block';
-    statusLine.textContent = `Loaded ${loadStatus.ok} of ${loadStatus.total} role lists. ${loadStatus.failed} didn't load (check their sharing settings), so some roles may be missing. Refresh to retry.`;
+    statusLine.textContent = `Loaded ${loadStatus.ok} of ${loadStatus.total} role lists — ${loadStatus.failed} didn't load (check their sharing settings), so some roles may be missing. Refresh to retry.`;
   }
   initFiltersAndListeners();
   render();
 })();
 </script>
-<script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a.cta-btn');if(!a||typeof gtag!=='function')return;var h=a.getAttribute('href')||'';var m=h.indexOf('tel:')===0?'phone':h.indexOf('wa.me')>-1?'whatsapp':h.indexOf('mailto:')===0?'email':'other';gtag('event','generate_lead',{form_type:'gp_jobs_board_'+m,page_path:location.pathname});},true);</script>
