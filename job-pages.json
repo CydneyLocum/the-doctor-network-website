@@ -337,19 +337,19 @@
  },
  "TDN-0062": {
   "firstPublished": "2026-10-21",
-  "lastmod": "2026-10-15",
+  "lastmod": "2026-11-10",
   "page": "job-consultant-psychiatrist-alice-springs-tdn-0062.html",
   "title": "Consultant Psychiatrist"
  },
  "TDN-0063": {
   "firstPublished": "2026-10-21",
-  "lastmod": "2026-10-15",
+  "lastmod": "2026-11-10",
   "page": "job-consultant-psychiatrist-alice-springs-tdn-0063.html",
   "title": "Consultant Psychiatrist"
  },
  "TDN-0064": {
   "firstPublished": "2026-10-21",
-  "lastmod": "2026-10-15",
+  "lastmod": "2026-11-10",
   "page": "job-consultant-psychiatrist-alice-springs-tdn-0064.html",
   "title": "Consultant Psychiatrist"
  },
@@ -667,15 +667,15 @@
  },
  "TDN-0118": {
   "firstPublished": "2026-10-30",
-  "lastmod": "2026-10-30",
-  "page": "job-consultant-psychiatrist-alice-springs-tdn-0118.html",
-  "title": "Consultant Psychiatrist"
+  "lastmod": "2026-11-10",
+  "page": "job-psychiatry-registrar-alice-springs-tdn-0118.html",
+  "title": "Psychiatry Registrar"
  },
  "TDN-0119": {
   "firstPublished": "2026-10-30",
-  "lastmod": "2026-10-30",
-  "page": "job-consultant-psychiatrist-child-adolescent-alice-springs-tdn-0119.html",
-  "title": "Consultant Psychiatrist \u2013 Child & Adolescent"
+  "lastmod": "2026-11-10",
+  "page": "job-psychiatry-registrar-child-youth-alice-springs-tdn-0119.html",
+  "title": "Psychiatry Registrar \u2013 Child & Youth"
  },
  "TDN-0120": {
   "firstPublished": "2026-10-30",
@@ -721,7 +721,7 @@
  },
  "TDN-0127": {
   "firstPublished": "2026-11-03",
-  "lastmod": "2026-11-02",
+  "lastmod": "2026-11-10",
   "page": "job-consultant-psychiatrist-consultation-liaison-rural-sa-tdn-0127.html",
   "title": "Consultant Psychiatrist \u2013 Consultation Liaison"
  },
@@ -820,5 +820,17 @@
   "lastmod": "2026-11-10",
   "page": "job-consultant-psychiatrist-lismore-tdn-0143.html",
   "title": "Consultant Psychiatrist"
+ },
+ "TDN-0144": {
+  "firstPublished": "2026-11-11",
+  "lastmod": "2026-11-10",
+  "page": "job-consultant-psychiatrist-consultation-liaison-hobart-tdn-0144.html",
+  "title": "Consultant Psychiatrist \u2013 Consultation Liaison"
+ },
+ "TDN-0145": {
+  "firstPublished": "2026-11-11",
+  "lastmod": "2026-11-10",
+  "page": "job-psychiatry-registrar-consultation-liaison-alice-springs-tdn-0145.html",
+  "title": "Psychiatry Registrar \u2013 Consultation Liaison"
  }
 }
