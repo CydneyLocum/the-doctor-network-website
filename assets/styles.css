@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
 
 :root{
   --paper:#faf9f6;
@@ -28,7 +28,7 @@ button,input,select,textarea{font:inherit}
 .shell{width:min(calc(100% - 56px),var(--shell));margin:auto}
 .site-header{position:sticky;top:0;z-index:50;background:rgba(250,249,246,.93);backdrop-filter:blur(18px)}
 .nav{height:78px;display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:28px}
-.wordmark{font-family:'Fredoka',sans-serif;font-size:28px;font-weight:600;letter-spacing:-.04em;display:inline-flex;align-items:center;white-space:nowrap;line-height:1;color:var(--ink)}
+.wordmark{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:600;letter-spacing:-.04em;display:inline-flex;align-items:center;white-space:nowrap;line-height:1;color:var(--ink)}
 .doctor-mid{position:relative;display:inline-flex;align-items:baseline}
 .eye{color:var(--coral)}
 .logo-smile{position:absolute;left:3px;right:3px;bottom:-15px;width:calc(100% - 6px);height:19px;overflow:visible;pointer-events:none}
@@ -53,7 +53,7 @@ button,input,select,textarea{font:inherit}
 .hero-copy{padding:46px 40px 62px 0;position:relative;z-index:2}
 .kicker{display:flex;align-items:center;gap:14px;font-size:13px;letter-spacing:.18em;font-weight:800;color:#315a53;text-transform:uppercase;margin-bottom:22px}
 .kicker:before{content:"";display:block;width:38px;height:2px;background:var(--coral)}
-h1,h2,h3{font-family:'Fredoka',sans-serif;line-height:1.1;letter-spacing:-.03em;margin:0 0 20px}
+h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;line-height:1.1;letter-spacing:-.03em;margin:0 0 20px}
 h1{font-size:clamp(32px,3.3vw,46px);max-width:16ch}
 h1 .dot{color:var(--coral)}
 h2{font-size:clamp(24px,2.3vw,32px)}
@@ -63,7 +63,7 @@ h3{font-size:20px}
 .hero-media{position:absolute;right:0;top:0;width:56.5%;height:550px;overflow:hidden}
 .hero-media img{width:100%;height:100%;object-fit:cover;object-position:47% 50%}
 .hero-media:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--paper) 0%,rgba(250,249,246,.78) 8%,rgba(250,249,246,.18) 24%,transparent 42%)}
-.hero-script{position:absolute;right:8%;top:145px;color:white;font-family:'Fredoka',sans-serif;font-size:26px;line-height:1.15;transform:rotate(-8deg);text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.13);z-index:3}
+.hero-script{position:absolute;right:8%;top:145px;color:white;font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;line-height:1.15;transform:rotate(-8deg);text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.13);z-index:3}
 .hero-swoop{position:absolute;right:-60px;bottom:32px;width:780px;height:150px;z-index:3}
 .hero-swoop path{fill:none;stroke:var(--coral);stroke-width:6;stroke-linecap:round}
 
@@ -102,7 +102,7 @@ h3{font-size:20px}
 .dark-band p{color:#cbd8d4;font-size:18px;max-width:700px}
 .metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:42px}
 .metric{border:1px solid rgba(255,255,255,.13);border-radius:20px;padding:23px}
-.metric strong{display:block;font-family:'Fredoka';font-size:23px;margin-bottom:8px}
+.metric strong{display:block;font-family:'Plus Jakarta Sans';font-size:23px;margin-bottom:8px}
 .metric span{color:#b9c9c5;font-size:14px}
 
 .jobs-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:32px}
@@ -132,7 +132,7 @@ textarea{min-height:125px;resize:vertical}
 .insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .insight{background:white;border-radius:24px;border:1px solid var(--line);overflow:hidden}
 .insight-art{height:180px;background:linear-gradient(135deg,var(--mint),var(--blush));position:relative}
-.insight-art:after{content:"☺";position:absolute;font-family:'Fredoka';font-size:90px;color:var(--coral);right:25px;bottom:7px;transform:rotate(-8deg)}
+.insight-art:after{content:"☺";position:absolute;font-family:'Plus Jakarta Sans';font-size:90px;color:var(--coral);right:25px;bottom:7px;transform:rotate(-8deg)}
 .insight-body{padding:24px}
 .insight-body h3{font-size:19px}
 
@@ -213,9 +213,9 @@ textarea{min-height:125px;resize:vertical}
 .product-grid{display:grid;grid-template-columns:180px 1fr;gap:12px;min-height:440px}
 .product-sidebar,.product-main{border:1px solid rgba(255,255,255,.09);border-radius:20px;background:rgba(255,255,255,.035)}
 .product-sidebar{padding:16px}.product-main{padding:20px}
-.product-brand{display:flex;align-items:center;gap:9px;font-family:'Fredoka';font-weight:600;margin-bottom:24px}.product-brand img{width:28px}
+.product-brand{display:flex;align-items:center;gap:9px;font-family:'Plus Jakarta Sans';font-weight:600;margin-bottom:24px}.product-brand img{width:28px}
 .product-navitem{padding:10px 11px;border-radius:10px;color:#b9c8c4;font-size:13px;margin-bottom:4px}.product-navitem.active{background:rgba(255,255,255,.09);color:white}
-.product-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.product-heading strong{font-family:'Fredoka';font-size:22px}
+.product-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.product-heading strong{font-family:'Plus Jakarta Sans';font-size:22px}
 .product-chip{padding:7px 10px;border-radius:999px;background:#ff6b4a;color:white;font-size:11px;font-weight:800}
 .pipeline{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.pipeline-col{border-radius:14px;background:rgba(255,255,255,.045);padding:11px;min-height:310px}
 .pipeline-col>strong{display:block;font-size:12px;color:#b9c8c4;margin-bottom:10px}
