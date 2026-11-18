@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
 
 :root{
   --paper:#faf9f6;
@@ -28,7 +28,7 @@ button,input,select,textarea{font:inherit}
 .shell{width:min(calc(100% - 56px),var(--shell));margin:auto}
 .site-header{position:sticky;top:0;z-index:50;background:rgba(250,249,246,.93);backdrop-filter:blur(18px)}
 .nav{height:78px;display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:28px}
-.wordmark{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:600;letter-spacing:-.04em;display:inline-flex;align-items:center;white-space:nowrap;line-height:1;color:var(--ink)}
+.wordmark{font-family:'Fredoka',sans-serif;font-size:28px;font-weight:600;letter-spacing:-.04em;display:inline-flex;align-items:center;white-space:nowrap;line-height:1;color:var(--ink)}
 .doctor-mid{position:relative;display:inline-flex;align-items:baseline}
 .eye{color:var(--coral)}
 .logo-smile{position:absolute;left:3px;right:3px;bottom:-15px;width:calc(100% - 6px);height:19px;overflow:visible;pointer-events:none}
