@@ -1,7 +1,7 @@
 <!doctype html><html lang="en-AU"><head><meta charset="utf-8"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QEE73VMZ5W"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-QEE73VMZ5W');</script><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="../assets/favicon.png"><title>GP Jobs Australia | Locum & Permanent GP Jobs Board | The Doctor Network</title><meta name="description" content="Current GP locum, float and permanent jobs across Australia, including DPA locations. Call, WhatsApp or email to enquire."><link rel="canonical" href="https://thedoctornetwork.com.au/GPJobsBoard/"><meta property="og:type" content="website"><meta property="og:title" content="GP Jobs Board | The Doctor Network"><meta property="og:description" content="Current GP locum, float and permanent jobs across Australia."><meta property="og:url" content="https://thedoctornetwork.com.au/GPJobsBoard/"><meta property="og:image" content="https://thedoctornetwork.com.au/assets/og-image.jpg"><meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --teal-600:#F76747; --teal-700:#E95839; --teal-100:#FFF2EC;
@@ -45,9 +45,22 @@ body{ background:var(--paper-50); color:var(--ink-900); font-family:"Manrope",sy
 button{ font-family:inherit; }
 
 header{ position:sticky; top:env(safe-area-inset-top,0px); z-index:30; background:var(--paper-0); border-bottom:1px solid var(--line); }
+.site-nav{ background:#142328; }
+.site-nav-inner{ max-width:1280px; margin:0 auto; padding:9px 20px; display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+.site-nav-back{ display:flex; align-items:center; gap:6px; font-family:"Manrope",sans-serif; font-size:.82rem; font-weight:600; color:#fff; opacity:.92; white-space:nowrap; }
+.site-nav-back:hover{ opacity:1; text-decoration:underline; }
+.site-nav-back svg{ width:13px; height:13px; flex:none; }
+.site-nav-links{ display:flex; align-items:center; gap:18px; font-family:"Manrope",sans-serif; font-size:.82rem; font-weight:600; flex-wrap:wrap; }
+.site-nav-links a{ color:#fff; opacity:.8; }
+.site-nav-links a:hover{ opacity:1; text-decoration:underline; }
 .header-inner{ max-width:1280px; margin:0 auto; padding:14px 20px 6px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
-.logo{ display:flex; align-items:center; gap:9px; }
-.logo-word{ font-family:"Plus Jakarta Sans",sans-serif; font-weight:700; font-size:1.2rem; color:var(--ink-900); letter-spacing:.01em; }
+.logo{ display:flex; align-items:center; gap:9px; text-decoration:none; }
+.logo-word{ font-family:"Fredoka",sans-serif; font-weight:700; font-size:1.2rem; color:var(--ink-900); letter-spacing:.01em; }
+@media (max-width:640px){
+  .site-nav-inner{ padding:8px 20px; gap:10px; }
+  .site-nav-links{ gap:12px; font-size:.76rem; }
+  .site-nav-back span{ display:none; }
+}
 .logo-word .doctor{ position:relative; display:inline-block; padding-bottom:4px; }
 .logo-word .doctor .o{ color:var(--teal-600); }
 .logo-word .logo-smile{ position:absolute; left:1px; right:1px; bottom:-4px; width:calc(100% - 2px); height:.32em; display:block; }
@@ -141,11 +154,22 @@ select#sortSelect{ padding:9px 12px; border:1px solid var(--line); border-radius
 footer{ max-width:1280px; margin:0 auto 40px; padding:0 20px; color:var(--ink-400); font-size:.78rem; text-align:center; }
 </style>
 
+<div class="site-nav">
+  <div class="site-nav-inner">
+    <a class="site-nav-back" href="../index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Back to thedoctornetwork.com.au</span></a>
+    <nav class="site-nav-links" aria-label="The Doctor Network">
+      <a href="../index.html">Home</a>
+      <a href="../opportunities.html">All Jobs</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
 <header>
   <div class="header-inner">
-    <div class="logo" aria-label="The Doctor Network" role="img">
+    <a class="logo" href="../index.html" aria-label="The Doctor Network home">
       <span class="logo-word">The D<span class="doctor"><span class="o">o</span>ct<span class="o">o</span><svg class="logo-smile" viewBox="0 0 100 34" aria-hidden="true"><path d="M5 7 Q50 32 95 7"/></svg></span>r Network</span>
-    </div>
+    </a>
     <span class="count-pill" id="headerCount">Loading…</span>
   </div>
   <div class="header-inner" style="padding-top:0; padding-bottom:0;">
