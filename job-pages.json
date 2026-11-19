@@ -467,12 +467,6 @@
   "page": "job-consultant-psychiatrist-older-persons-albany-tdn-0088.html",
   "title": "Consultant Psychiatrist \u2013 Older Persons"
  },
- "TDN-0089": {
-  "firstPublished": "2026-10-22",
-  "lastmod": "2026-10-22",
-  "page": "job-consultant-psychiatrist-emergency-department-adelaide-tdn-0089.html",
-  "title": "Consultant Psychiatrist \u2013 Emergency Department"
- },
  "TDN-0090": {
   "firstPublished": "2026-10-22",
   "lastmod": "2026-10-22",
@@ -496,12 +490,6 @@
   "lastmod": "2026-10-27",
   "page": "job-consultant-psychiatrist-community-perth-tdn-0093.html",
   "title": "Consultant Psychiatrist \u2013 Community"
- },
- "TDN-0094": {
-  "firstPublished": "2026-11-18",
-  "lastmod": "2026-11-18",
-  "page": "job-consultant-psychiatrist-emergency-pecc-blacktown-tdn-0094.html",
-  "title": "Consultant Psychiatrist \u2013 Emergency (PECC)"
  },
  "TDN-0095": {
   "firstPublished": "2026-11-18",
@@ -880,5 +868,35 @@
   "lastmod": "2026-11-18",
   "page": "job-consultant-psychiatrist-child-adolescent-perth-north-metro-tdn-0157.html",
   "title": "Consultant Psychiatrist \u2013 Child & Adolescent"
+ },
+ "TDN-0158": {
+  "firstPublished": "2026-11-19",
+  "lastmod": "2026-11-18",
+  "page": "job-consultant-psychiatrist-community-perth-tdn-0158.html",
+  "title": "Consultant Psychiatrist \u2013 Community"
+ },
+ "TDN-0159": {
+  "firstPublished": "2026-11-19",
+  "lastmod": "2026-11-18",
+  "page": "job-consultant-psychiatrist-emergency-department-adelaide-tdn-0159.html",
+  "title": "Consultant Psychiatrist \u2013 Emergency Department"
+ },
+ "TDN-0160": {
+  "firstPublished": "2026-11-19",
+  "lastmod": "2026-11-18",
+  "page": "job-consultant-psychiatrist-brisbane-tdn-0160.html",
+  "title": "Consultant Psychiatrist"
+ },
+ "TDN-0161": {
+  "firstPublished": "2026-11-19",
+  "lastmod": "2026-11-18",
+  "page": "job-consultant-psychiatrist-addiction-melbourne-tdn-0161.html",
+  "title": "Consultant Psychiatrist \u2013 Addiction"
+ },
+ "TDN-0162": {
+  "firstPublished": "2026-11-19",
+  "lastmod": "2026-11-19",
+  "page": "job-consultant-psychiatrist-forensic-concord-tdn-0162.html",
+  "title": "Consultant Psychiatrist \u2013 Forensic"
  }
 }
