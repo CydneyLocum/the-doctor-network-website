@@ -161,22 +161,10 @@
   "page": "job-consultant-psychiatrist-brisbane-tdn-0033.html",
   "title": "Consultant Psychiatrist"
  },
- "TDN-0034": {
-  "firstPublished": "2026-10-21",
-  "lastmod": "2026-10-15",
-  "page": "job-consultant-psychiatrist-caboolture-tdn-0034.html",
-  "title": "Consultant Psychiatrist"
- },
  "TDN-0035": {
   "firstPublished": "2026-10-21",
   "lastmod": "2026-10-15",
   "page": "job-consultant-psychiatrist-sunshine-coast-tdn-0035.html",
-  "title": "Consultant Psychiatrist"
- },
- "TDN-0036": {
-  "firstPublished": "2026-10-21",
-  "lastmod": "2026-10-15",
-  "page": "job-consultant-psychiatrist-maroochydore-tdn-0036.html",
   "title": "Consultant Psychiatrist"
  },
  "TDN-0037": {
@@ -268,12 +256,6 @@
   "lastmod": "2026-10-15",
   "page": "job-consultant-psychiatrist-consultation-liaison-hobart-tdn-0051.html",
   "title": "Consultant Psychiatrist \u2013 Consultation Liaison"
- },
- "TDN-0052": {
-  "firstPublished": "2026-10-21",
-  "lastmod": "2026-10-15",
-  "page": "job-consultant-psychiatrist-hobart-tdn-0052.html",
-  "title": "Consultant Psychiatrist"
  },
  "TDN-0053": {
   "firstPublished": "2026-10-21",
@@ -593,12 +575,6 @@
   "page": "job-consultant-psychiatrist-brisbane-tdn-0112.html",
   "title": "Consultant Psychiatrist"
  },
- "TDN-0113": {
-  "firstPublished": "2026-10-28",
-  "lastmod": "2026-10-28",
-  "page": "job-consultant-psychiatrist-hospital-in-the-home-adelaide-tdn-0113.html",
-  "title": "Consultant Psychiatrist \u2013 Hospital in the Home"
- },
  "TDN-0114": {
   "firstPublished": "2026-10-30",
   "lastmod": "2026-10-30",
@@ -833,12 +809,6 @@
   "page": "job-consultant-psychiatrist-burnie-tdn-0152.html",
   "title": "Consultant Psychiatrist"
  },
- "TDN-0153": {
-  "firstPublished": "2026-11-12",
-  "lastmod": "2026-11-12",
-  "page": "job-consultant-psychiatrist-rockingham-tdn-0153.html",
-  "title": "Consultant Psychiatrist"
- },
  "TDN-0154": {
   "firstPublished": "2026-11-18",
   "lastmod": "2026-11-18",
@@ -904,5 +874,11 @@
   "lastmod": "2026-11-20",
   "page": "job-consultant-psychiatrist-wangaratta-tdn-0164.html",
   "title": "Consultant Psychiatrist"
+ },
+ "TDN-0165": {
+  "firstPublished": "2026-11-21",
+  "lastmod": "2026-11-21",
+  "page": "job-consultant-psychiatrist-community-armadale-tdn-0165.html",
+  "title": "Consultant Psychiatrist \u2013 Community"
  }
 }
