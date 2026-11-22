@@ -154,7 +154,7 @@ function jobCard(job){
   const rate=esc(job.salaryRate || '');
   const search=esc(`${job.positionTitle||''} ${job.specialty||''} ${subOf(job)} ${job.location||''}`.toLowerCase());
 
-  return `<article class="job-card"
+  return `<article class="job-card reveal"
     data-search="${search}"
     data-specialty="${specialty}"
     data-subspecialty="${sub}"
@@ -211,6 +211,7 @@ async function loadJobsPage(){
       return;
     }
     grid.innerHTML=jobs.map(jobCard).join('');
+    initReveals(grid);
     fillSelect('specialty',jobs.map(j=>j.specialty),'All specialties');
     fillSelect('subspecialty',jobs.map(subOf),'All sub-specialties');
     const subSel=document.getElementById('subspecialty');
@@ -237,6 +238,7 @@ async function loadHomeJobs(){
   try{
     const jobs=(await fetchJobs()).slice(0,3);
     grid.innerHTML=jobs.map(jobCard).join('');
+    initReveals(grid);
     if(status) status.style.display='none';
     if(!jobs.length && status){
       status.style.display='block';
@@ -381,25 +383,57 @@ if (brandCursor && window.matchMedia('(pointer:fine)').matches) {
   document.addEventListener('mouseleave',()=>brandCursor.style.opacity='0');
   document.addEventListener('mouseenter',()=>brandCursor.style.opacity='1');
   document.addEventListener('mouseover',e=>{
-    if(e.target.closest('a,button,input,select,textarea,.job-card,.journey-card')) brandCursor.classList.add('is-hovering');
+    if(e.target.closest('a,button,input,select,textarea,.job-card,.journey-card,.feature-card,.insight,.step')) brandCursor.classList.add('is-hovering');
   });
   document.addEventListener('mouseout',e=>{
-    if(e.target.closest('a,button,input,select,textarea,.job-card,.journey-card')) brandCursor.classList.remove('is-hovering');
+    if(e.target.closest('a,button,input,select,textarea,.job-card,.journey-card,.feature-card,.insight,.step')) brandCursor.classList.remove('is-hovering');
   });
   window.addEventListener('mousedown',()=>brandCursor.classList.add('is-clicking'));
   window.addEventListener('mouseup',()=>brandCursor.classList.remove('is-clicking'));
   follow();
 }
 
-// Scroll reveal
-const reveals=[...document.querySelectorAll('.reveal')];
-if('IntersectionObserver' in window){
-  const observer=new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){entry.target.classList.add('in-view');observer.unobserve(entry.target);}
-    });
-  },{threshold:.12});
-  reveals.forEach(el=>observer.observe(el));
-}else{
-  reveals.forEach(el=>el.classList.add('in-view'));
+// Scroll reveal — re-run on any root (e.g. after job cards load in async) so late content animates in too
+function initReveals(root=document){
+  const els=[...root.querySelectorAll('.reveal:not(.in-view)')];
+  if(!els.length) return;
+  if('IntersectionObserver' in window){
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){entry.target.classList.add('in-view');observer.unobserve(entry.target);}
+      });
+    },{threshold:.12});
+    els.forEach(el=>observer.observe(el));
+  }else{
+    els.forEach(el=>el.classList.add('in-view'));
+  }
+}
+initReveals();
+
+// Nav tightens up and deepens its shadow once you've scrolled
+const siteHeader=document.querySelector('.site-header');
+if(siteHeader){
+  const onScroll=()=>siteHeader.classList.toggle('scrolled', window.scrollY>24);
+  onScroll();
+  window.addEventListener('scroll',onScroll,{passive:true});
+}
+
+// Cards tilt gently toward the cursor instead of sitting flat
+if(window.matchMedia('(pointer:fine)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.addEventListener('mousemove',e=>{
+    const card=e.target.closest('.job-card,.feature-card,.journey-card,.insight,.step');
+    if(!card) return;
+    const r=card.getBoundingClientRect();
+    const px=(e.clientX-r.left)/r.width-0.5;
+    const py=(e.clientY-r.top)/r.height-0.5;
+    card.style.setProperty('--tilt-x',(py*-6).toFixed(2)+'deg');
+    card.style.setProperty('--tilt-y',(px*6).toFixed(2)+'deg');
+  });
+  document.addEventListener('mouseout',e=>{
+    const card=e.target.closest('.job-card,.feature-card,.journey-card,.insight,.step');
+    if(card && !card.contains(e.relatedTarget)){
+      card.style.setProperty('--tilt-x','0deg');
+      card.style.setProperty('--tilt-y','0deg');
+    }
+  });
 }
