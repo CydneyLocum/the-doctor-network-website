@@ -279,3 +279,14 @@ textarea{min-height:125px;resize:vertical}
 .job-facts{list-style:none;padding:0;margin:0 0 26px;display:grid;gap:8px;font-size:17px}
 .job-body p{font-size:17px;line-height:1.7}
 .job-back{margin-top:28px}
+
+/* hub pages (state / sub-specialty / pay rates) */
+a.hub-link{text-decoration:none;color:var(--ink);transition:background .15s ease}
+a.hub-link:hover{background:var(--coral);color:white}
+.hub-empty{font-size:17px;max-width:720px}
+.hub-note{font-size:14px;color:#5b6b6f;margin-top:18px}
+.job-more{margin-top:26px;line-height:2}
+.rate-table-wrap{overflow-x:auto;margin:18px 0}
+.rate-table{width:100%;border-collapse:collapse;font-size:15px}
+.rate-table th,.rate-table td{text-align:left;padding:12px 10px;border-bottom:1px solid rgba(20,35,40,.12)}
+.rate-table th{font-weight:800}

@@ -260,11 +260,21 @@ def build_page(template, j, name, posted):
             body.append(f"<{tag}>{lbl}</{tag}><p>{para(j.get(k))}</p>")
     if len(body) <= 1:
         body.append("<p>Further details are available in a confidential conversation. Send an enquiry and we'll be in touch.</p>")
+    more = []
+    if is_psych(j) and str(j.get("state") or "").upper() in {c for c, _, _, _ in STATES}:
+        st = str(j["state"]).upper()
+        more.append(f'<a class="text-link" href="{state_page(st)}">More psychiatry jobs in {st} →</a>')
+    for key, fname, label, _ in SUBSPECIALTIES:
+        if sub(j) == key:
+            more.append(f'<a class="text-link" href="{fname}">More {label.lower()} →</a>')
+    if more:
+        body.append('<p class="job-more">' + "<br>".join(more) + "</p>")
     body.append('<p class="job-back"><a class="text-link" href="opportunities.html">← See all current jobs</a></p>')
 
     main = (f'<section class="page-hero"><div class="shell"><div class="kicker">{e(sub(j) or j.get("specialty") or "Medical")} job · {e(j.get("state") or "Australia")}</div>'
-            f'<h1>{e(j.get("positionTitle"))}</h1><p>{e(j.get("shortSummary"))}</p><div class="pills">{pills}</div></div></section>'
-            f'<section class="section"><div class="shell content-grid"><article class="job-body">{"".join(body)}</article><aside>FORM</aside></div></section>')
+            f'<h1>{e(j.get("positionTitle"))}</h1><p>{e(j.get("shortSummary"))}</p><div class="pills">{pills}</div>'
+            f'<div class="hero-actions"><a class="button coral" href="#enquire">Enquire about this role →</a></div></div></section>'
+            f'<section class="section"><div class="shell content-grid"><article class="job-body">{"".join(body)}</article><aside id="enquire">FORM</aside></div></section>')
 
     form = re.search(r'<form class="form-card demo-form" data-form-type="job_enquiry">.*?</form>', template, re.S).group(0)
     form = form.replace('id="enquiryJobId">', f'value="{e(j.get("jobId"))}">').replace('id="enquiryJobTitle">', f'value="{e(j.get("positionTitle"))}">')
@@ -290,6 +300,217 @@ def static_card(j, name):
             f'<a class="text-link" href="{name}">View job →</a></article>')
 
 
+# ---------------------------------------------------------------------------
+# Hub pages: one page per state, per psychiatry sub-specialty, plus a pay-rates
+# page, all rebuilt from the live jobs on every run.
+# ---------------------------------------------------------------------------
+
+STATES = [
+    ("NSW", "New South Wales", "nsw",
+     "Locum psychiatry work in New South Wales ranges from busy Sydney metro services to regional hubs like the Hunter, Illawarra, Central West and Northern Rivers, plus rural and remote sites in the far west. Regional roles often include travel and accommodation."),
+    ("VIC", "Victoria", "vic",
+     "Victorian locum psychiatry roles span Melbourne's metro mental health services and regional centres such as Geelong, Ballarat, Bendigo, Gippsland and the north-east. Many regional placements include travel and accommodation."),
+    ("QLD", "Queensland", "qld",
+     "Queensland has a steady flow of locum psychiatry work, from Brisbane and the Gold and Sunshine Coasts to regional centres like Townsville, Cairns, Mackay and Rockhampton, and remote outreach across the north and west."),
+    ("WA", "Western Australia", "wa",
+     "Western Australia offers locum psychiatry roles in Perth's metro services and right across the regions, from the South West and Great Southern to the Pilbara and Kimberley. Regional packages commonly cover flights, accommodation and a car."),
+    ("SA", "South Australia", "sa",
+     "South Australian locum psychiatry roles are based mainly in Adelaide's metro services, with regional work in centres such as Mount Gambier, Whyalla, Port Augusta and the Riverland."),
+    ("TAS", "Tasmania", "tas",
+     "Tasmania's locum psychiatry roles are spread across Hobart, Launceston and the north-west coast, and suit doctors looking for a change of pace with genuine variety in their caseload."),
+    ("NT", "Northern Territory", "nt",
+     "Northern Territory locum psychiatry work is centred on Darwin and Alice Springs, with outreach to remote communities. It's rewarding work with a strong focus on culturally safe care, and roles usually include travel and accommodation."),
+    ("ACT", "the ACT", "act",
+     "Locum psychiatry roles in the ACT are based in Canberra's public and private mental health services, and suit doctors who want metro-style work in a smaller city."),
+]
+
+SUBSPECIALTIES = [
+    ("General Adult Psychiatry", "general-adult-psychiatry-jobs.html", "General adult psychiatry jobs",
+     "General adult psychiatry roles cover acute inpatient units, community teams and outpatient clinics. They're the backbone of most mental health services, and there's steady demand for both locum and permanent consultants."),
+    ("Community Psychiatry", "community-psychiatry-jobs.html", "Community psychiatry jobs",
+     "Community psychiatry roles work with adult community mental health teams, continuing care and crisis or acute care teams outside hospital, often with a mix of clinic, home visits and team leadership."),
+    ("Child & Adolescent Psychiatry", "child-adolescent-psychiatry-jobs.html", "Child and adolescent psychiatry jobs",
+     "Child and adolescent psychiatry (CAMHS / CYMHS) roles cover infant, child and youth mental health in community clinics, inpatient units and consultation services. Experienced child psychiatrists are in short supply, especially outside the capitals."),
+    ("Older Persons Psychiatry", "older-persons-psychiatry-jobs.html", "Older persons psychiatry jobs",
+     "Older persons (old age) psychiatry roles cover inpatient, community and residential aged care work, often alongside geriatric medicine. Demand is growing as the population ages."),
+    ("Consultation-Liaison Psychiatry", "consultation-liaison-psychiatry-jobs.html", "Consultation-liaison psychiatry jobs",
+     "Consultation-liaison psychiatry roles support general hospital wards and emergency departments, assessing patients with mental health needs alongside medical and surgical teams."),
+    ("Forensic Psychiatry", "forensic-psychiatry-jobs.html", "Forensic psychiatry jobs",
+     "Forensic psychiatry roles span secure units, prison and custodial health, court liaison and community forensic teams."),
+    ("Addiction / Drug & Alcohol Psychiatry", "addiction-psychiatry-jobs.html", "Addiction psychiatry jobs",
+     "Addiction psychiatry roles cover drug and alcohol services, withdrawal units, opioid treatment programs and consultation to other teams."),
+    ("Rehabilitation & Neuropsychiatry", "rehabilitation-neuropsychiatry-jobs.html", "Rehabilitation and neuropsychiatry jobs",
+     "Rehabilitation and neuropsychiatry roles support people with complex, longer-term needs, including brain injury and neurodevelopmental conditions, often in specialist inpatient or community programs."),
+]
+
+PAY_PAGE = "locum-psychiatrist-pay-rates.html"
+
+
+def state_page(code):
+    return f"locum-psychiatrist-jobs-{code.lower()}.html"
+
+
+def is_psych(j):
+    return "psychiatr" in str(j.get("specialty") or "").lower()
+
+
+def is_consultant(j):
+    t = str(j.get("positionTitle") or "").lower()
+    return not any(k in t for k in ("registrar", "trainee", "medical officer", "cmo", "resident", "junior"))
+
+
+def day_rate(j):
+    """'$2750 per day' / 'Up to $2800 per day' / '$2700 - $2900 per day' -> midpoint dollars; else None."""
+    s = str(j.get("salaryRate") or "").lower().replace(",", "")
+    if "day" not in s:
+        return None
+    nums = [float(x) for x in re.findall(r"\d+(?:\.\d+)?", s) if 500 <= float(x) <= 10000]
+    if not nums:
+        return None
+    return (nums[0] + nums[1]) / 2 if len(nums) >= 2 else nums[0]
+
+
+def money(n):
+    return "${:,.0f}".format(n)
+
+
+def median(xs):
+    xs = sorted(xs)
+    n = len(xs)
+    return xs[n // 2] if n % 2 else (xs[n // 2 - 1] + xs[n // 2]) / 2
+
+
+def hub_shell(template, fname, title, desc, kicker, h1, intro, body, crumb_name):
+    url = f"{SITE}/{fname}"
+    h = set_head(template, title, desc, url, og_type="website")
+    h = re.sub(r'<meta name="robots"[^>]*>', "", h)
+    main = (f'<section class="page-hero"><div class="shell"><div class="kicker">{e(kicker)}</div><h1>{e(h1)}</h1>'
+            f'<p>{intro}</p><div class="hero-actions"><a class="button coral" href="join.html">Join the Network →</a>'
+            f'<a class="button outline" href="opportunities.html">All jobs</a></div></div></section>{body}')
+    h = re.sub(r"<main>.*?</main>", lambda m: "<main>" + main + "</main>", h, count=1, flags=re.S)
+    crumbs = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": SITE + "/"},
+        {"@type": "ListItem", "position": 2, "name": "Jobs", "item": SITE + "/opportunities.html"},
+        {"@type": "ListItem", "position": 3, "name": crumb_name, "item": url}]}
+    return h.replace("</head>", '<script type="application/ld+json">' + json.dumps(crumbs, ensure_ascii=False) + "</script></head>", 1)
+
+
+def job_grid(items, empty_msg):
+    if not items:
+        return (f'<p class="hub-empty">{empty_msg} New roles are added most days. '
+                f'<a class="text-link" href="join.html">Join the Network</a> and we\'ll let you know when something suitable comes up.</p>')
+    return '<div class="jobs-grid">' + "".join(static_card(j, n) for j, n in items) + "</div>"
+
+
+def browse_links(current=None):
+    st = "".join(f'<a class="pill hub-link" href="{state_page(c)}">{c}</a>' for c, _, _, _ in STATES if state_page(c) != current)
+    sp = "".join(f'<a class="pill hub-link" href="{f}">{e(label.replace(" jobs", ""))}</a>' for _, f, label, _ in SUBSPECIALTIES if f != current)
+    pay = "" if current == PAY_PAGE else f'<p><a class="text-link" href="{PAY_PAGE}">Locum psychiatrist pay rates →</a></p>'
+    return (f'<section class="section white"><div class="shell"><div class="section-heading"><div class="kicker">Browse</div>'
+            f'<h2>More psychiatry jobs.</h2></div><h3>By state</h3><div class="spec-pills">{st}</div>'
+            f'<h3 style="margin-top:28px">By sub-specialty</h3><div class="spec-pills">{sp}</div>{pay}</div></section>')
+
+
+def build_hubs(template, items):
+    """items: list of (job, page_name) for live psychiatry jobs. Returns list of (filename, lastmod)."""
+    out = []
+    today_nice = dt.date.fromisoformat(TODAY).strftime("%-d %B %Y")
+
+    for code, name, _, intro in STATES:
+        fname = state_page(code)
+        mine = [(j, n) for j, n in items if str(j.get("state") or "").upper() == code]
+        n = len(mine)
+        subs = sorted({sub(j) for j, _ in mine if sub(j)})
+        count_line = (f"<p><strong>{n} psychiatry role{'s' if n != 1 else ''} live in {code}</strong> right now"
+                      + (f", including {', '.join(s.lower() for s in subs[:4])}" if subs else "") + ".</p>") if n else ""
+        body = (f'<section class="section"><div class="shell">{count_line}'
+                f'{job_grid(mine, f"There are no psychiatry roles live in {name} right now.")}</div></section>'
+                + browse_links(fname))
+        title = f"Locum Psychiatrist Jobs {code} | Psychiatry Jobs in {name.replace('the ', '')} | The Doctor Network"
+        desc = (f"{n} current locum and permanent psychiatry jobs in {name}. " if n else f"Locum and permanent psychiatry jobs in {name}. ") + \
+            "Consultant psychiatrist roles in metro and regional services, updated daily."
+        write(fname, hub_shell(template, fname, title, desc[:158], f"Psychiatry jobs · {code}",
+                               f"Locum psychiatrist jobs in {name}", e(intro), body, f"Psychiatry jobs {code}"))
+        out.append(fname)
+
+    for key, fname, label, intro in SUBSPECIALTIES:
+        mine = [(j, n) for j, n in items if sub(j) == key]
+        n = len(mine)
+        states = sorted({str(j.get("state") or "").upper() for j, _ in mine if j.get("state")})
+        count_line = (f"<p><strong>{n} {label.lower().replace(' jobs', '')} role{'s' if n != 1 else ''} live</strong>"
+                      + (f" across {', '.join(states)}" if states else "") + ".</p>") if n else ""
+        body = (f'<section class="section"><div class="shell">{count_line}'
+                f'{job_grid(mine, f"There are no {label.lower()} live right now.")}</div></section>' + browse_links(fname))
+        title = f"{label.title().replace('And', 'and')} Australia | Locum and Permanent | The Doctor Network"
+        desc = (f"{n} current {label.lower()} across Australia. " if n else f"Current {label.lower()} across Australia. ") + \
+            "Locum and permanent consultant roles, updated daily."
+        write(fname, hub_shell(template, fname, title, desc[:158], "Psychiatry jobs", f"{label} in Australia",
+                               e(intro), body, label))
+        out.append(fname)
+
+    # pay rates page, from consultant day rates on the board right now
+    rated = [(j, day_rate(j)) for j, _ in items if is_consultant(j)]
+    rated = [(j, r) for j, r in rated if r]
+    rows, all_rates = [], [r for _, r in rated]
+    for code, name, _, _ in STATES:
+        rs = [r for j, r in rated if str(j.get("state") or "").upper() == code]
+        if len(rs) >= 2:
+            rows.append(f'<tr><td><a class="text-link" href="{state_page(code)}">{code}</a></td><td>{len(rs)}</td>'
+                        f'<td>{money(median(rs))}</td><td>{money(min(rs))} – {money(max(rs))}</td></tr>')
+        elif len(rs) == 1:
+            rows.append(f'<tr><td><a class="text-link" href="{state_page(code)}">{code}</a></td><td>1</td>'
+                        f'<td>{money(rs[0])}</td><td>–</td></tr>')
+    if all_rates:
+        summary = (f"<p>Across the <strong>{len(all_rates)} consultant locum roles</strong> with a quoted day rate on our board "
+                   f"as at {today_nice}, the median rate is <strong>{money(median(all_rates))} per day</strong>, ranging from "
+                   f"{money(min(all_rates))} to {money(max(all_rates))}.</p>")
+        table = ('<div class="rate-table-wrap"><table class="rate-table"><thead><tr><th>State</th><th>Roles</th>'
+                 '<th>Median day rate</th><th>Range</th></tr></thead><tbody>' + "".join(rows) + "</tbody></table></div>")
+    else:
+        summary, table = "<p>We don't have enough quoted day rates on the board right now to show a meaningful figure.</p>", ""
+    faq = [
+        ("How much does a locum psychiatrist earn per day in Australia?",
+         (f"Based on the consultant locum roles currently on our board, the median quoted rate is {money(median(all_rates))} per day. "
+          if all_rates else "")
+         + "Rates vary with location, setting, on-call, urgency and whether travel and accommodation are included."),
+        ("Why do locum psychiatry rates vary so much?",
+         "Remote and regional roles, short-notice cover, heavy on-call and hard-to-fill sub-specialties usually pay more. "
+         "Metro roles and longer bookings tend to sit lower, but are often easier to fit around life."),
+        ("Are travel and accommodation included?",
+         "For most regional and remote locums, yes: flights, accommodation and often a car are covered on top of the day rate. "
+         "Check each role, as packages differ."),
+        ("Do registrars and CMOs earn the same?",
+         "No. These figures are for consultant roles only. Registrar, trainee and career medical officer locums are paid at different rates."),
+    ]
+    faq_html = "".join(f"<details><summary>{e(q)}</summary><p>{e(a)}</p></details>" for q, a in faq)
+    faq_ld = {"@context": "https://schema.org", "@type": "FAQPage",
+              "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}
+    body = (f'<section class="section white"><div class="shell policy">{summary}{table}'
+            '<p class="hub-note">These figures come from the live roles on our jobs board and update automatically. '
+            'They\'re a guide only: hourly-rate roles, permanent salaries and roles without a quoted rate aren\'t included, '
+            'and the right rate for a particular booking depends on the details.</p></div></section>'
+            f'<section class="section"><div class="shell"><div class="section-heading"><div class="kicker">Common questions</div>'
+            f'<h2>Locum psychiatry pay, explained.</h2></div><div class="faq">{faq_html}</div></div></section>' + browse_links(PAY_PAGE))
+    title = "Locum Psychiatrist Pay Rates Australia | Day Rates by State | The Doctor Network"
+    desc = (f"What do locum psychiatrists earn per day in Australia? Live median day rates by state from "
+            f"{len(all_rates)} current consultant roles, updated daily.")[:158]
+    h = hub_shell(template, PAY_PAGE, title, desc, "Pay rates", "Locum psychiatrist pay rates in Australia",
+                  "What consultant psychiatrists are being offered for locum work right now, by state, from the live roles on our jobs board.",
+                  body, "Locum psychiatrist pay rates")
+    h = h.replace("</head>", '<script type="application/ld+json">' + json.dumps(faq_ld, ensure_ascii=False) + "</script></head>", 1)
+    write(PAY_PAGE, h)
+    out.append(PAY_PAGE)
+    return out
+
+
+def hub_links_html():
+    st = "".join(f'<a class="pill hub-link" href="{state_page(c)}">{c}</a>' for c, _, _, _ in STATES)
+    sp = "".join(f'<a class="pill hub-link" href="{f}">{e(label.replace(" jobs", ""))}</a>' for _, f, label, _ in SUBSPECIALTIES)
+    return (f'<div class="hub-browse"><p><strong>Psychiatry jobs by state:</strong></p><div class="spec-pills">{st}</div>'
+            f'<p style="margin-top:18px"><strong>By sub-specialty:</strong></p><div class="spec-pills">{sp}</div>'
+            f'<p style="margin-top:18px"><a class="text-link" href="{PAY_PAGE}">Locum psychiatrist pay rates →</a></p></div>')
+
+
 def replace_between(text, start, end, inner):
     if start not in text:
         return text
@@ -306,7 +527,7 @@ def main():
         manifest = {}
     template = read("opportunity.html")
 
-    new_manifest, cards, written, seen = {}, [], set(), {}
+    new_manifest, cards, written, seen, psych_items = {}, [], set(), {}, []
     for j in jobs:
         jid = str(j["jobId"]).strip()
         if jid in seen:
@@ -321,6 +542,8 @@ def main():
         new_manifest[jid] = {"page": name, "title": j.get("positionTitle", ""), "firstPublished": first_seen,
                              "lastmod": iso(j.get("lastUpdated")) or posted}
         cards.append(static_card(j, name))
+        if is_psych(j):
+            psych_items.append((j, name))
 
     # remove pages for jobs that are no longer live (or were renamed); every job-*.html page is builder-owned
     for f in sorted(os.listdir(ROOT)):
@@ -341,7 +564,17 @@ def main():
     if "<!--JOBS:START-->" not in sm:
         sm = sm.replace("</urlset>", "<!--JOBS:START--><!--JOBS:END-->\n</urlset>")
     write("sitemap.xml", replace_between(sm, "<!--JOBS:START-->", "<!--JOBS:END-->", "\n" + entries))
-    print(f"built {len(new_manifest)} job page(s)")
+    # state, sub-specialty and pay-rate pages, plus links to them
+    hub_template = read("about.html")
+    hubs = build_hubs(hub_template, psych_items)
+    for page in ("opportunities.html", "psychiatry-recruitment.html"):
+        write(page, replace_between(read(page), "<!--HUBS:START-->", "<!--HUBS:END-->", hub_links_html()))
+    sm = read("sitemap.xml")
+    if "<!--HUBS:START-->" not in sm:
+        sm = sm.replace("<!--JOBS:START-->", "<!--HUBS:START--><!--HUBS:END-->\n<!--JOBS:START-->")
+    hub_entries = "".join(f"<url><loc>{SITE}/{f}</loc><lastmod>{TODAY}</lastmod><priority>0.8</priority></url>\n" for f in hubs)
+    write("sitemap.xml", replace_between(sm, "<!--HUBS:START-->", "<!--HUBS:END-->", "\n" + hub_entries))
+    print(f"built {len(new_manifest)} job page(s) and {len(hubs)} hub page(s)")
 
 
 if __name__ == "__main__":
