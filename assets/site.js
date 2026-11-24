@@ -6,6 +6,16 @@ const API_CONFIGURED = API_URL && !API_URL.includes("PASTE_YOUR_");
 const mb=document.querySelector('.menu-button'), mn=document.querySelector('.mobile-nav');
 if(mb&&mn){mb.addEventListener('click',()=>{const open=mn.classList.toggle('open');mb.setAttribute('aria-expanded',String(open));mb.textContent=open?'×':'☰';});}
 
+// Jobs Radar announcement banner — dismiss persists per browser
+const radarBanner=document.getElementById('radarBanner');
+if(radarBanner){
+  const closeBtn=radarBanner.querySelector('.radar-banner-close');
+  if(closeBtn) closeBtn.addEventListener('click',()=>{
+    radarBanner.classList.add('dismissed');
+    try{localStorage.setItem('radarBannerDismissed','1');}catch(e){}
+  });
+}
+
 function esc(value){
   return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
 }
@@ -383,10 +393,10 @@ if (brandCursor && window.matchMedia('(pointer:fine)').matches) {
   document.addEventListener('mouseleave',()=>brandCursor.style.opacity='0');
   document.addEventListener('mouseenter',()=>brandCursor.style.opacity='1');
   document.addEventListener('mouseover',e=>{
-    if(e.target.closest('a,button,input,select,textarea,.job-card,.journey-card,.feature-card,.insight,.step')) brandCursor.classList.add('is-hovering');
+    if(e.target.closest('a,button,input,select,textarea,.job-card,.journey-card,.feature-card,.insight,.step,.page-hero-media')) brandCursor.classList.add('is-hovering');
   });
   document.addEventListener('mouseout',e=>{
-    if(e.target.closest('a,button,input,select,textarea,.job-card,.journey-card,.feature-card,.insight,.step')) brandCursor.classList.remove('is-hovering');
+    if(e.target.closest('a,button,input,select,textarea,.job-card,.journey-card,.feature-card,.insight,.step,.page-hero-media')) brandCursor.classList.remove('is-hovering');
   });
   window.addEventListener('mousedown',()=>brandCursor.classList.add('is-clicking'));
   window.addEventListener('mouseup',()=>brandCursor.classList.remove('is-clicking'));
@@ -421,7 +431,7 @@ if(siteHeader){
 // Cards tilt gently toward the cursor instead of sitting flat
 if(window.matchMedia('(pointer:fine)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
   document.addEventListener('mousemove',e=>{
-    const card=e.target.closest('.job-card,.feature-card,.journey-card,.insight,.step');
+    const card=e.target.closest('.job-card,.feature-card,.journey-card,.insight,.step,.page-hero-media');
     if(!card) return;
     const r=card.getBoundingClientRect();
     const px=(e.clientX-r.left)/r.width-0.5;
@@ -430,10 +440,22 @@ if(window.matchMedia('(pointer:fine)').matches && !window.matchMedia('(prefers-r
     card.style.setProperty('--tilt-y',(px*6).toFixed(2)+'deg');
   });
   document.addEventListener('mouseout',e=>{
-    const card=e.target.closest('.job-card,.feature-card,.journey-card,.insight,.step');
+    const card=e.target.closest('.job-card,.feature-card,.journey-card,.insight,.step,.page-hero-media');
     if(card && !card.contains(e.relatedTarget)){
       card.style.setProperty('--tilt-x','0deg');
       card.style.setProperty('--tilt-y','0deg');
     }
   });
 }
+
+// Back-to-top button — created on every page, no markup changes needed
+(function(){
+  const btn=document.createElement('button');
+  btn.className='back-to-top';
+  btn.type='button';
+  btn.setAttribute('aria-label','Back to top');
+  btn.innerHTML='&uarr;';
+  btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+  document.body.appendChild(btn);
+  window.addEventListener('scroll',()=>{btn.classList.toggle('visible', window.scrollY>500);},{passive:true});
+})();
