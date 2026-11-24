@@ -271,10 +271,10 @@ def build_page(template, j, name, posted):
         body.append('<p class="job-more">' + "<br>".join(more) + "</p>")
     body.append('<p class="job-back"><a class="text-link" href="opportunities.html">← See all current jobs</a></p>')
 
-    main = (f'<section class="page-hero"><div class="shell"><div class="kicker">{e(sub(j) or j.get("specialty") or "Medical")} job · {e(j.get("state") or "Australia")}</div>'
+    main = (f'<section class="page-hero"><div class="shell"><div class="reveal"><div class="kicker">{e(sub(j) or j.get("specialty") or "Medical")} job · {e(j.get("state") or "Australia")}</div>'
             f'<h1>{e(j.get("positionTitle"))}</h1><p>{e(j.get("shortSummary"))}</p><div class="pills">{pills}</div>'
-            f'<div class="hero-actions"><a class="button coral" href="#enquire">Enquire about this role →</a></div></div></section>'
-            f'<section class="section"><div class="shell content-grid"><article class="job-body">{"".join(body)}</article><aside id="enquire">FORM</aside></div></section>')
+            f'<div class="hero-actions"><a class="button coral" href="#enquire">Enquire about this role →</a></div></div></div></section>'
+            f'<section class="section"><div class="shell content-grid"><article class="job-body reveal">{"".join(body)}</article><aside id="enquire" class="reveal delay-1">FORM</aside></div></section>')
 
     form = re.search(r'<form class="form-card demo-form" data-form-type="job_enquiry">.*?</form>', template, re.S).group(0)
     form = form.replace('id="enquiryJobId">', f'value="{e(j.get("jobId"))}">').replace('id="enquiryJobTitle">', f'value="{e(j.get("positionTitle"))}">')
