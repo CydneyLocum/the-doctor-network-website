@@ -1,0 +1,298 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Doctor Network - Job Radar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Plus+Jakarta+Sans:wght@600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='22' cy='26' r='9' fill='none' stroke='%23F76747' stroke-width='6'/%3E%3Ccircle cx='42' cy='26' r='9' fill='none' stroke='%23F76747' stroke-width='6'/%3E%3Cpath d='M14 44 Q32 58 50 44' fill='none' stroke='%23F76747' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+  :root{--cream:#FAF9F6;--ink:#142328;--coral:#F76747;--coral-soft:#FDE3DC;--green:#1F574C;--green-soft:#E3EEEB;--muted:#5B6B70;--line:#E7E3DA;}
+  *{box-sizing:border-box;}
+  body{font-family:'Manrope',Arial,sans-serif;margin:0;color:var(--ink);background:var(--cream);-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:720px;margin:0 auto;padding:28px 20px 48px;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px;}
+  .logo{text-decoration:none;color:var(--ink);display:inline-block;}
+  .logo-word{font-family:'Fredoka',sans-serif;font-weight:600;font-size:24px;letter-spacing:-.01em;line-height:1;white-space:nowrap;}
+  .logo-word .o{color:var(--coral);}
+  .doc{position:relative;display:inline-block;}
+  .smile{position:absolute;left:8%;width:84%;height:10px;bottom:-9px;}
+  .pill-label{font-size:12px;font-weight:700;color:var(--green);background:var(--green-soft);border-radius:999px;padding:6px 12px;white-space:nowrap;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:0 1px 2px rgba(20,35,40,.04);}
+  h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;color:var(--ink);}
+  h1{font-size:26px;font-weight:800;margin:0 0 6px;letter-spacing:-.01em;}
+  h2{font-size:17px;font-weight:700;margin:0 0 12px;}
+  .sub{color:var(--muted);font-size:14.5px;line-height:1.6;margin-bottom:20px;}
+  p{color:var(--ink);font-size:14.5px;line-height:1.6;}
+  label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px;font-weight:700;}
+  select,input[type=date],input[type=text]{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:12px;font-size:14px;font-family:inherit;background:var(--cream);color:var(--ink);}
+  select:focus,input:focus{outline:2px solid var(--coral);outline-offset:1px;border-color:transparent;}
+  .row{margin-bottom:16px;}
+  .two-col{display:flex;gap:12px;}
+  .two-col > div{flex:1;min-width:0;}
+  .chip-group{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;user-select:none;background:#fff;margin:0;color:var(--ink);}
+  .chip input{margin:0;width:auto;accent-color:var(--coral);}
+  .chip.checked{background:var(--coral-soft);border-color:var(--coral);color:#B83F22;}
+  .btn{display:inline-block;background:var(--coral);color:#fff;border:none;padding:12px 24px;border-radius:999px;font-size:14.5px;font-weight:700;cursor:pointer;text-decoration:none;font-family:inherit;transition:background .15s;}
+  .btn:hover{background:#E4532F;}
+  .btn:disabled{opacity:.65;cursor:default;}
+  .btn-secondary,.btn-secondary:hover{background:var(--green-soft);color:var(--green);}
+  .btn-sm{padding:9px 18px;font-size:13.5px;}
+  .note{background:var(--green-soft);border-radius:14px;padding:12px 14px;font-size:13.5px;color:var(--green);margin:0 0 18px;}
+  .note-error{background:var(--coral-soft);color:#B83F22;}
+  .note-success{background:var(--green-soft);color:var(--green);}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .loading{color:var(--muted);font-size:14px;}
+  .section-gap{margin-top:30px;padding-top:24px;border-top:1px solid var(--line);}
+  .job-card{border:1px solid var(--line);border-radius:18px;padding:18px 20px;margin-bottom:12px;background:var(--cream);}
+  .job-card h3{font-size:16px;font-weight:700;margin:0 0 4px;}
+  .job-sub{color:var(--muted);font-size:13.5px;margin-bottom:10px;}
+  .job-rate{display:inline-block;font-weight:800;color:var(--green);font-size:14px;margin-bottom:10px;}
+  .job-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+  .tag{background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:700;}
+  .job-desc{font-size:13.5px;color:var(--ink);line-height:1.6;margin:6px 0 14px;}
+  .empty{color:var(--muted);font-size:14px;}
+  .month-picker{display:flex;gap:8px;align-items:center;margin-top:8px;}
+  .month-picker select{width:auto;}
+  .footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:22px;line-height:1.7;}
+  .footer a{color:var(--coral);font-weight:700;text-decoration:none;}
+  @media (max-width:520px){.two-col{flex-direction:column;gap:8px;}.card{padding:22px 18px;}.logo-word{font-size:20px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="logo" href="https://thedoctornetwork.com.au/" aria-label="The Doctor Network">
+      <span class="logo-word">The <span class="doc">D<span class="o">o</span>ct<span class="o">o</span>r<svg class="smile" viewBox="0 0 60 12" aria-hidden="true"><path d="M4 3 Q30 16 56 3" fill="none" stroke="#F76747" stroke-width="3.2" stroke-linecap="round"/></svg></span> Network</span>
+    </a>
+    <span class="pill-label">Your job radar</span>
+  </div>
+  <div id="app" class="card"><p class="loading">Loading&hellip;</p></div>
+  <div class="footer">Questions about a role? Just email <a href="mailto:hello@thedoctornetwork.com.au">hello@thedoctornetwork.com.au</a><br>Doctors are better connected.</div>
+</div>
+
+<script>
+var API_BASE = "https://vgavcmazlmgflyqlmbns.supabase.co/functions/v1/job-radar-portal";
+
+function qs(name){
+  return new URLSearchParams(window.location.search).get(name) || "";
+}
+function esc(s){
+  return String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function fmtDate(iso){
+  if (!iso) return "";
+  try { return new Date(iso + "T00:00:00").toLocaleDateString("en-AU", { day:"numeric", month:"short", year:"numeric" }); }
+  catch (e) { return iso; }
+}
+
+function ymd(d){
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
+
+var token = qs("token");
+var app = document.getElementById("app");
+var MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+function renderError(message){
+  app.innerHTML = "<h1>Something's not right</h1><p>" + esc(message) + "</p><p>If you need a hand, email <a href=\"mailto:hello@thedoctornetwork.com.au\" style=\"color:#F76747;font-weight:700;\">hello@thedoctornetwork.com.au</a>.</p>";
+}
+
+if (!token){
+  renderError("This link is missing its access token.");
+} else {
+  loadData();
+}
+
+function srcParam(){
+  var src = qs("src");
+  return src && /^[a-z0-9_-]{1,30}$/i.test(src) ? "&src=" + encodeURIComponent(src.toLowerCase()) : "";
+}
+function apiGet(){
+  return fetch(API_BASE + "?token=" + encodeURIComponent(token) + srcParam())
+    .then(function(res){ return res.json().then(function(body){ return { ok: res.ok, body: body }; }); });
+}
+function apiPost(payload){
+  return fetch(API_BASE + "?token=" + encodeURIComponent(token) + srcParam(), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  }).then(function(res){ return res.json().then(function(body){ return { ok: res.ok, body: body }; }); });
+}
+
+function loadData(){
+  if (qs("stop") === "1"){
+    apiPost({ action: "stop_radar_emails" }).then(function(){
+      apiGet().then(function(r){
+        if (!r.ok){ renderError((r.body && r.body.error) || "This link is invalid. Please ask The Doctor Network to resend it."); return; }
+        renderPage(r.body, "Done. You won't get Jobs Radar emails any more. Your radar link still works, and saving your preferences turns the emails back on.", false);
+      });
+    }).catch(function(){ renderError("We couldn't update that right now. Please try again shortly."); });
+    return;
+  }
+  apiGet().then(function(r){
+    if (!r.ok){ renderError((r.body && r.body.error) || "This link is invalid. Please ask The Doctor Network to resend it."); return; }
+    renderPage(r.body);
+  }).catch(function(){ renderError("We couldn't load your job radar right now. Please check your connection and try again."); });
+}
+
+function subSpecialtyOptionsHtml(specialty, current){
+  var list = (specialty && SUBSPECIALTY_MAP_G[specialty]) || [];
+  if (!list.length){
+    return "<option value=\"\">No sub-specialties defined yet</option>";
+  }
+  var html = "<option value=\"\">Any</option>";
+  list.forEach(function(s){
+    html += "<option value=\"" + esc(s) + "\" " + (s === current ? "selected" : "") + ">" + esc(s) + "</option>";
+  });
+  return html;
+}
+
+var SUBSPECIALTY_MAP_G = {};
+
+function monthOptionsHtml(){
+  var now = new Date();
+  var html = "";
+  for (var i = 0; i < 12; i++){
+    var d = new Date(now.getFullYear(), now.getMonth() + i, 1);
+    html += "<option value=\"" + d.getFullYear() + "-" + (d.getMonth()+1) + "\">" + MONTH_NAMES[d.getMonth()] + " " + d.getFullYear() + "</option>";
+  }
+  return html;
+}
+
+function renderPage(data, statusMsg, statusIsError){
+  SUBSPECIALTY_MAP_G = data.subSpecialtyMap || {};
+
+  var jobTypeChips = (data.jobTypeOptions || []).map(function(t){
+    var checked = (data.jobTypes || []).indexOf(t) !== -1;
+    return "<label class=\"chip" + (checked ? " checked" : "") + "\"><input type=\"checkbox\" data-jobtype=\"" + esc(t) + "\" " + (checked ? "checked" : "") + " /> " + esc(t) + "</label>";
+  }).join("");
+
+  var states = data.states || [];
+  var stateChips = "<label class=\"chip" + (states.length ? "" : " checked") + "\"><input type=\"checkbox\" id=\"stateAnywhere\" " + (states.length ? "" : "checked") + " /> Anywhere</label>" +
+    (data.stateOptions || []).map(function(st){
+      var checked = states.indexOf(st) !== -1;
+      return "<label class=\"chip" + (checked ? " checked" : "") + "\"><input type=\"checkbox\" data-state=\"" + esc(st) + "\" " + (checked ? "checked" : "") + " /> " + esc(st) + "</label>";
+    }).join("");
+  var gradeSelect = "<select id=\"prefGrade\"><option value=\"\">Select your level...</option>" +
+    (data.gradeOptions || []).map(function(g){ return "<option value=\"" + esc(g.value) + "\" " + (g.value === data.grade ? "selected" : "") + ">" + esc(g.label) + "</option>"; }).join("") +
+    "</select>";
+
+  var jobCards = (data.jobs || []).length ? (data.jobs || []).map(function(j){
+    var tags = [j.jobType, j.specialty, j.subSpecialty].filter(Boolean).map(function(t){ return "<span class=\"tag\">" + esc(t) + "</span>"; }).join("");
+    var dateRange = j.startDate ? (esc(fmtDate(j.startDate)) + (j.endDate ? " - " + esc(fmtDate(j.endDate)) : " onwards")) : "";
+    return "<div class=\"job-card\">" +
+      "<h3>" + esc(j.title) + "</h3>" +
+      "<div class=\"job-sub\">" + [esc(j.hospitalName), esc(j.location), dateRange].filter(Boolean).join(" &middot; ") + "</div>" +
+      (j.rate ? "<div class=\"job-rate\">" + esc(j.rate) + "</div>" : "") +
+      "<div class=\"job-tags\">" + tags + "</div>" +
+      (j.description ? "<div class=\"job-desc\">" + esc(j.description) + "</div>" : "") +
+      "<button class=\"btn btn-sm" + (j.interested ? " btn-secondary" : "") + "\" type=\"button\" data-interest=\"" + esc(j.id) + "\" " + (j.interested ? "disabled" : "") + ">" + (j.interested ? "✓ We'll be in touch" : "I'm interested") + "</button>" +
+    "</div>";
+  }).join("") : "<p class=\"empty\">No open roles match your preferences right now. New roles come in every day, so check back soon, or widen your preferences above.</p>";
+
+  app.innerHTML =
+    "<h1>Hi " + esc(data.firstName ? ("Dr " + data.firstName) : data.doctorName) + "</h1>" +
+    "<div class=\"sub\">Tell us what you're after and we'll show you roles that fit. Update it any time and your recruiter will see the change straight away.</div>" +
+    (statusMsg ? "<div class=\"note " + (statusIsError ? "note-error" : "note-success") + "\">" + esc(statusMsg) + "</div>" : "") +
+
+    "<h2>Your preferences</h2>" +
+    "<div class=\"two-col\">" +
+      "<div class=\"row\"><label>Specialty</label><select id=\"prefSpecialty\"><option value=\"\">Any</option>" +
+        (data.specialtyOptions || []).map(function(s){ return "<option value=\"" + esc(s) + "\" " + (s === data.specialty ? "selected" : "") + ">" + esc(s) + "</option>"; }).join("") +
+      "</select></div>" +
+      "<div class=\"row\"><label>Sub-specialty</label><select id=\"prefSubSpecialty\">" + subSpecialtyOptionsHtml(data.specialty, data.subSpecialty) + "</select></div>" +
+    "</div>" +
+    "<div class=\"row\"><label>Your level</label>" + gradeSelect + "</div>" +
+    "<div class=\"row\"><label>Job type (leave blank for any)</label><div class=\"chip-group\" id=\"jobTypeChips\">" + jobTypeChips + "</div></div>" +
+    "<div class=\"row\"><label>Where would you work?</label><div class=\"chip-group\" id=\"stateChips\">" + stateChips + "</div></div>" +
+    "<div class=\"row\"><label>Available from / to</label>" +
+      "<div class=\"two-col\"><div><input type=\"date\" id=\"prefAvailFrom\" value=\"" + esc(data.availabilityStart || "") + "\" /></div><div><input type=\"date\" id=\"prefAvailTo\" value=\"" + esc(data.availabilityEnd || "") + "\" /></div></div>" +
+      "<div class=\"month-picker\"><span style=\"font-size:12.5px;color:#5B6B70;\">or pick a month:</span><select id=\"prefMonthPick\"><option value=\"\">Select a month...</option>" + monthOptionsHtml() + "</select></div>" +
+    "</div>" +
+    "<div class=\"actions\"><button class=\"btn\" id=\"savePrefsBtn\" type=\"button\">Save preferences</button></div>" +
+
+    "<h2 class=\"section-gap\">Roles matching your preferences" + ((data.jobs||[]).length ? " (" + data.jobs.length + ")" : "") + "</h2>" +
+    "<div id=\"jobList\">" + jobCards + "</div>";
+
+  var specialtySel = document.getElementById("prefSpecialty");
+  specialtySel.addEventListener("change", function(){
+    document.getElementById("prefSubSpecialty").innerHTML = subSpecialtyOptionsHtml(specialtySel.value, "");
+  });
+
+  document.querySelectorAll("#jobTypeChips .chip").forEach(function(chip){
+    chip.addEventListener("change", function(){
+      chip.classList.toggle("checked", chip.querySelector("input").checked);
+    });
+  });
+
+  var anywhere = document.getElementById("stateAnywhere");
+  var stateInputs = Array.prototype.slice.call(document.querySelectorAll("#stateChips input[data-state]"));
+  function syncStateChips(){
+    document.querySelectorAll("#stateChips .chip").forEach(function(c){ c.classList.toggle("checked", c.querySelector("input").checked); });
+  }
+  anywhere.addEventListener("change", function(){
+    if (anywhere.checked) stateInputs.forEach(function(i){ i.checked = false; });
+    else if (!stateInputs.some(function(i){ return i.checked; })) anywhere.checked = true;
+    syncStateChips();
+  });
+  stateInputs.forEach(function(inp){
+    inp.addEventListener("change", function(){
+      anywhere.checked = !stateInputs.some(function(i){ return i.checked; });
+      syncStateChips();
+    });
+  });
+
+  document.getElementById("prefMonthPick").addEventListener("change", function(){
+    var val = this.value;
+    if (!val) return;
+    var parts = val.split("-");
+    var year = parseInt(parts[0], 10), month = parseInt(parts[1], 10);
+    var first = new Date(year, month - 1, 1);
+    var last = new Date(year, month, 0);
+    document.getElementById("prefAvailFrom").value = ymd(first);
+    document.getElementById("prefAvailTo").value = ymd(last);
+  });
+
+  document.getElementById("savePrefsBtn").addEventListener("click", function(){
+    var btn = this;
+    var jobTypes = Array.prototype.slice.call(document.querySelectorAll("#jobTypeChips input:checked")).map(function(el){ return el.getAttribute("data-jobtype"); });
+    var payload = {
+      action: "update_preferences",
+      specialty: document.getElementById("prefSpecialty").value,
+      subSpecialty: document.getElementById("prefSubSpecialty").value,
+      jobTypes: jobTypes,
+      states: stateInputs.filter(function(i){ return i.checked; }).map(function(i){ return i.getAttribute("data-state"); }),
+      grade: document.getElementById("prefGrade").value,
+      availabilityStart: document.getElementById("prefAvailFrom").value || null,
+      availabilityEnd: document.getElementById("prefAvailTo").value || null
+    };
+    btn.disabled = true; btn.textContent = "Saving...";
+    apiPost(payload).then(function(r){
+      if (!r.ok){ renderPage(data, (r.body && r.body.error) || "Something went wrong. Please try again.", true); return; }
+      renderPage(r.body, "Saved! Your matching roles are up to date, and we've let your recruiter know.", false);
+    }).catch(function(){ renderPage(data, "We couldn't save your preferences right now. Please try again shortly.", true); });
+  });
+
+  document.querySelectorAll("[data-interest]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var jobId = btn.getAttribute("data-interest");
+      btn.disabled = true; btn.textContent = "Sending...";
+      apiPost({ action: "express_interest", jobId: jobId }).then(function(r){
+        if (!r.ok){ btn.disabled = false; btn.textContent = "I'm interested"; renderPage(data, (r.body && r.body.error) || "Something went wrong. Please try again.", true); return; }
+        btn.classList.add("btn-secondary");
+        btn.textContent = "✓ We'll be in touch";
+        var job = (data.jobs || []).filter(function(j){ return j.id === jobId; })[0];
+        if (job) job.interested = true;
+      }).catch(function(){ btn.disabled = false; btn.textContent = "I'm interested"; });
+    });
+  });
+}
+</script>
+</body>
+</html>
